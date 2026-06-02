@@ -3,11 +3,18 @@
 import { useEffect, useMemo, useRef } from "react";
 import Image, { type StaticImageData } from "next/image";
 import { loadZoomooz } from "./load-zoomooz";
+import ZoomCardSwiper from "./zoom-card-swiper";
 import "./zoom-gallery.scss";
 
 export type ZoomItem = {
   src: string | StaticImageData;
   title: string;
+  /**
+   * Full set of images for this card. When more than one is provided, the card
+   * shows a looping slideshow (autoplaying while zoomed); otherwise it's a
+   * single static image (`src`).
+   */
+  images?: (string | StaticImageData)[];
   /** small decorative corner number */
   num?: number | string;
   /** render the card rotated 180° (like the vue "UPSIDE DOWN" card) */
@@ -329,14 +336,39 @@ export default function ZoomGallery({
         className={`zoom-target${item.flip ? " flip" : ""}`}
         data-idx={index}
       >
+        {/* Media layer — the Swiper's inner translate transform is contained
+            here; every overlay below is a sibling so it never inherits it. */}
+        <div className="zoom-card-media">
+          {item.images && item.images.length > 1 ? (
+            <ZoomCardSwiper images={item.images} alt={item.alt ?? item.title} />
+          ) : (
+            <Image
+              src={item.src}
+              alt={item.alt ?? item.title}
+              className="zoom-card-img"
+              fill
+              sizes="(max-width: 768px) 90vw, 80vw"
+            />
+          )}
+        </div>
+
+        {/* Hover-only "view" affordance. */}
+        <div className="zoom-card-overlay" aria-hidden="true">
+          <svg
+            className="zoom-card-open"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.4"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M1.5 12S5 5 12 5s10.5 7 10.5 7-3.5 7-10.5 7S1.5 12 1.5 12Z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </div>
+
         {item.num != null && <span className="zoom-card-num">{item.num}</span>}
-        <Image
-          src={item.src}
-          alt={item.alt ?? item.title}
-          className="zoom-card-img"
-          fill
-          sizes="(max-width: 768px) 90vw, 80vw"
-        />
         <span className="zoom-card-caption">{item.title}</span>
       </div>
     );

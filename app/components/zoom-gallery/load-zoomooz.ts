@@ -3,10 +3,10 @@
 //
 // Mirrors the script tags used by vue-playground/app/pages/zoom.vue.
 
-const JQUERY_SRC =
-  "https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js";
-const ZOOMOOZ_SRC =
-  "https://cdn.jsdelivr.net/gh/jaukia/zoomooz@master/jquery.zoomooz.js";
+// Served locally from /public/vendor (same-origin) rather than a CDN, so a
+// blocked/flaky CDN can never silently disable the zoom.
+const JQUERY_SRC = "/vendor/jquery-1.9.1.min.js";
+const ZOOMOOZ_SRC = "/vendor/jquery.zoomooz.js";
 
 type JQueryStatic = any;
 

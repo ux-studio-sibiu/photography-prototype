@@ -1,0 +1,65 @@
+// ─── White (light) theme ───────────────────────────────────────────────
+// Overrides the default dark component styling. Everything is scoped under
+// `.theme-white` (the class on <main>) so it never affects the /black page.
+// This is the place to tweak the light-theme look.
+
+// Light the document background too, so the gallery's vertical margins and any
+// overscroll don't reveal the dark <body> from globals.scss.
+body:has(.theme-white) {
+  background: #f4f3f0;
+}
+
+.theme-white {
+  background: #f4f3f0;
+  color: #1a1a1a;
+
+  // ─── Cover ───
+  #nsc--cover-section {
+    background-color: #f4f3f0;
+  }
+
+  // ─── Zoom gallery ───
+  .nsc--zoom-gallery {
+    background: #f4f3f0;
+  }
+
+  .zoom-card {
+    background: #ffffff; // placeholder tone behind images
+    background:transparent;
+
+    .zoom-card-img {
+      filter:initial;
+    }
+  }
+
+  // Captions sit over photos, so keep the readable light-on-scrim treatment.
+
+  // ─── Footer ───
+  #nsc--footer {
+    background: #f4f3f0;
+    color: #1a1a1a;
+    border-top-color: rgba(0, 0, 0, 0.12);
+
+    .brand-tagline {
+      color: rgba(0, 0, 0, 0.55);
+    }
+
+    .col-title,
+    .footer-muted {
+      color: rgba(0, 0, 0, 0.45);
+    }
+
+    .footer-link {
+      color: rgba(0, 0, 0, 0.78);
+
+      &:hover {
+        color: #000;
+      }
+    }
+
+    .footer-bottom {
+      border-top-color: rgba(0, 0, 0, 0.1);
+      color: rgba(0, 0, 0, 0.6);
+    }
+  }
+}

@@ -1,0 +1,383 @@
+// ─── Framer Motion gallery (shared-element zoom, no Zoomooz) ───
+.mg {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 80px 40px;
+  background: #0a0a0a;
+}
+
+// Mobile-first: clean uniform grid. The editorial / varied layout kicks in on
+// wider screens below.
+.mg-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  max-width: 1600px;
+  margin: 0 auto;
+  transform-origin: center center;
+}
+
+.mg-card {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  padding: 0;
+  border: none;
+  background: #151515;
+  cursor: pointer;
+}
+
+// ─── Editorial, uneven distribution (tablet/desktop) ───
+// 4 columns over a fixed row unit, with a repeating rhythm of tile shapes —
+// hero (2×2), portrait (1×2), landscape (2×1), square (1×1). `dense` packing
+// keeps it gap-free and structured despite the varied sizes.
+@media (min-width: 769px) {
+  .mg-grid {
+    grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: clamp(170px, 13vw, 240px);
+    grid-auto-flow: dense;
+    gap: 16px;
+  }
+
+  .mg-card {
+    aspect-ratio: auto; // size now comes from the grid spans
+    grid-column: span 1;
+    grid-row: span 1;
+  }
+
+  .mg-card:nth-child(6n + 1) {
+    grid-column: span 2;
+    grid-row: span 2;
+  } // hero
+
+  .mg-card:nth-child(6n + 2) {
+    grid-row: span 2;
+  } // portrait
+
+  .mg-card:nth-child(6n + 4) {
+    grid-column: span 2;
+  } // landscape
+
+  .mg-card:nth-child(6n + 6) {
+    grid-row: span 2;
+  } // portrait
+}
+
+.mg-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mg-card .mg-img {
+  filter: grayscale(100%);
+  transition: filter 0.4s ease;
+}
+
+.mg-card:hover .mg-img {
+  filter: grayscale(0%);
+}
+
+.mg-caption {
+  position: absolute;
+  top: 1rem;
+  left: 1.1rem;
+  z-index: 2;
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+}
+
+// ─── Expanded detail ───
+.mg-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(8, 8, 8, 0.92);
+}
+
+// Full-screen overlay: main stage (arrows + morphing detail) + right rail.
+.mg-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  display: flex;
+}
+
+.mg-main {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mg-detail {
+  position: relative;
+  flex-shrink: 0;
+  width: min(52vw, 820px);
+  height: min(82vh, 760px);
+  overflow: hidden;
+  background: #151515;
+}
+
+.mg-swiper {
+  width: 100%;
+  height: 100%;
+
+  .swiper-slide {
+    position: relative;
+  }
+}
+
+// ─── Arrows — outside the image, stylish + highly visible ───
+.mg-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  cursor: pointer;
+  animation: mg-fade 0.3s ease both;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+
+  svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.8);
+    border-color: rgba(255, 255, 255, 0.75);
+    transform: translateY(-50%) scale(1.06);
+  }
+
+  &.mg-nav-prev {
+    left: 28px;
+  }
+  &.mg-nav-next {
+    right: 28px;
+  }
+}
+
+// ─── Split-view left panel: large thumbnails in 2 columns ───
+.mg-rail {
+  flex-shrink: 0;
+  width: 500px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  // `safe center`: centers when the thumbs fit, but falls back to top-aligned +
+  // scrollable when there are many (so rows never overlap / get clipped).
+  align-content: safe center;
+  gap: 16px;
+  padding: 40px;
+  min-height: 0;
+  overflow-y: auto;
+  animation: mg-fade 0.3s ease both;
+}
+
+.mg-thumb {
+  position: relative;
+  aspect-ratio: 3 / 2; // matches the (landscape) photos → minimal cropping
+  padding: 0;
+  border: none;
+  background: #222;
+  cursor: pointer;
+  overflow: hidden;
+  outline: 2px solid transparent;
+  outline-offset: -2px;
+  transition: outline-color 0.2s ease;
+
+  &:hover {
+    outline-color: rgba(255, 255, 255, 0.5);
+  }
+
+  &.is-active {
+    outline-color: #fff;
+  }
+}
+
+.mg-thumb-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@keyframes mg-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.mg-detail-caption {
+  position: absolute;
+  top: 1.4rem;
+  left: 1.6rem;
+  z-index: 10;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.7);
+  pointer-events: none;
+}
+
+.mg-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background 0.2s ease;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.6);
+  }
+}
+
+// ─── White theme overrides ───
+.theme-white {
+  .mg {
+    background: #f4f3f0;
+  }
+
+  .mg-card {
+    background: #fff;
+  }
+
+  // Light theme shows photos in full colour.
+  .mg-card .mg-img,
+  .mg-card:hover .mg-img {
+    filter: none;
+  }
+
+  .mg-backdrop {
+    background: rgba(244, 243, 240, 0.94);
+  }
+
+  .mg-detail {
+    background: #fff;
+  }
+
+  // Close button: dark glyph on a light chip.
+  .mg-close {
+    background: rgba(0, 0, 0, 0.12);
+    color: #1a1a1a;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.25);
+    }
+  }
+
+  // Arrows: dark glyph + light chip so they stay visible on the light backdrop.
+  .mg-nav {
+    background: rgba(255, 255, 255, 0.65);
+    border-color: rgba(0, 0, 0, 0.15);
+    color: #1a1a1a;
+
+    &:hover {
+      background: #fff;
+      border-color: rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .mg-thumb {
+    background: #ddd;
+
+    &.is-active {
+      outline-color: #111;
+    }
+  }
+}
+
+// Mid screens: narrow the split panel so the detail keeps room.
+@media (max-width: 1200px) {
+  .mg-rail {
+    width: 360px;
+    padding: 28px;
+    gap: 12px;
+  }
+
+  .mg-detail {
+    width: min(54vw, 720px);
+  }
+}
+
+@media (max-width: 768px) {
+  .mg {
+    padding: 56px 16px;
+  }
+
+  .mg-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .mg-detail {
+    width: 90vw;
+    height: 70vh;
+  }
+
+  // No room for the rail on phones; arrows shrink + tuck to the edges.
+  .mg-rail {
+    display: none;
+  }
+
+  .mg-nav {
+    width: 42px;
+    height: 42px;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    &.mg-nav-prev {
+      left: 8px;
+    }
+    &.mg-nav-next {
+      right: 8px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .mg-grid {
+    grid-template-columns: 1fr;
+  }
+}

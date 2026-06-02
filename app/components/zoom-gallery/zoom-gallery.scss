@@ -8,7 +8,7 @@
   height: 100vh;
   overflow: hidden;
   background: #0a0a0a;
-  margin-top:300px;
+  margin-top:100px;
   margin-bottom:300px;
 
   // ─── Zoomooz viewport / container ──────────────
@@ -24,13 +24,15 @@
   // *inside* it as padding, around the grid — box-sizing keeps the outer size
   // unchanged.
   .zoom-container {
-
     position: relative;
     width: 100%;
     height: 100%;
     padding: 100px 0;
     cursor: pointer;
-    will-change: transform;
+    // NOTE: intentionally no `will-change: transform`. A permanent composited
+    // layer makes Zoomooz's scaled text / SVG arrows / dots blurry (the layer is
+    // rasterised at natural size then stretched). Without it the browser
+    // re-rasterises at the zoomed scale, keeping them crisp at rest.
   }
 
   // ─── Grid ──────────────────────────────────────
@@ -49,7 +51,8 @@
   .zoom-card {
     position: relative;
     overflow: hidden;
-    background: #151515;
+    // background: #151515;
+    background:transparent;
   }
 
   .zoom-card-pair {
@@ -75,6 +78,7 @@
   // non-interactive (clicks fall through to the background → zoom out).
   .zoom-container.is-zooming .zoom-target:not(.is-zoomed) {
     opacity: 0.06;
+    opacity: 0;
     pointer-events: none;
   }
 
@@ -82,12 +86,46 @@
     position: absolute;
     top: 1.2rem;
     right: 1.4rem;
-    z-index: 2;
+    z-index: 3;
     color: #fff;
     font-size: 1.4rem;
     font-weight: 700;
     opacity: 0.35;
     pointer-events: none;
+  }
+
+  // Media layer (single image or the swiper). It's the base layer; overlays
+  // are siblings stacked above it.
+  .zoom-card-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  // In-card slideshow (multi-photo categories). A plain image is always
+  // present (so the click-to-zoom is transform-free); Swiper is layered on top
+  // only while zoomed.
+  .zoom-card-stage {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .zoom-card-swiper {
+    position: absolute;
+    inset: 0;
+    z-index: 1; // above the static image
+    pointer-events: none; // controls live in a fixed overlay; zoom-out via bg
+
+    .swiper,
+    .swiper-slide {
+      width: 100%;
+      height: 100%;
+    }
+
+    .swiper-slide {
+      position: relative; // anchors the next/image `fill`
+    }
   }
 
   .zoom-card-img {
@@ -104,17 +142,17 @@
     filter: grayscale(0%);
   }
 
-  // Gradient scrim so the caption stays readable over any image.
+  // Gradient scrim (top) so the top-left caption stays readable over any image.
   .zoom-target::after {
     content: "";
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 0;
+    top: 0;
     height: 45%;
     z-index: 1;
     background: linear-gradient(
-      to top,
+      to bottom,
       rgba(0, 0, 0, 0.7) 0%,
       rgba(0, 0, 0, 0.25) 45%,
       rgba(0, 0, 0, 0) 100%
@@ -123,11 +161,11 @@
     pointer-events: none;
   }
 
-  // Caption is visible by default (small + readable); it scales up with the
-  // card when zoomed.
+  // Category caption — top-left, visible in both states (grid + zoomed).
+  // It scales up with the card when zoomed (crisp at rest, no portal needed).
   .zoom-card-caption {
     position: absolute;
-    bottom: 1.1rem;
+    top: 1.1rem;
     left: 1.1rem;
     right: 1.1rem;
     z-index: 3;
@@ -145,6 +183,40 @@
 
   .zoom-target.is-zoomed .zoom-card-caption {
     opacity: 1;
+  }
+
+  // ─── Hover "Deschide" overlay ───
+  // Hidden by default; on hover a dark tint covers the whole image and the
+  // label appears. Opacity-only, fast + sharp — no size/spacing animation.
+  .zoom-card-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55);
+    opacity: 0;
+    transition: opacity 0.12s ease-out;
+    pointer-events: none; // clicks fall through to the card
+  }
+
+  .zoom-card-open {
+    
+
+    color: #ffffff87;
+    filter: drop-shadow(0 1px 8px #00000080);
+    width: 60px;
+    height: 60px;
+  }
+
+  .zoom-target:hover .zoom-card-overlay {
+    opacity: 1;
+  }
+
+  // Never show it over a zoomed card (placed after :hover so it wins on tie).
+  .zoom-target.is-zoomed .zoom-card-overlay {
+    opacity: 0;
   }
 
   // ─── Mobile ────────────────────────────────────
@@ -181,6 +253,94 @@
     .zoom-grid {
       grid-template-columns: 1fr;
     }
+  }
+}
+
+// ─── Zoomed-card controls (portaled to <body>, outside the zoom transform) ───
+// Fixed-positioned to the zoomed card's rect, so arrows sit beside the image
+// and dots below it — pixel-crisp regardless of the zoom scale.
+.zoom-controls {
+  .zoom-ctrl,
+  .zoom-dots {
+    animation: nsc-ctrl-in 0.3s ease both;
+  }
+
+  .zoom-ctrl {
+    position: fixed;
+    z-index: 2147483646;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border: none;
+    background: none;
+    color: #fff;
+    cursor: pointer;
+    pointer-events: auto;
+    filter: drop-shadow(0 1px 6px rgba(0, 0, 0, 0.55));
+    transition: opacity 0.2s ease;
+
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    &:hover {
+      opacity: 0.65;
+    }
+  }
+
+  .zoom-dots {
+    position: fixed;
+    z-index: 2147483646;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    pointer-events: auto;
+  }
+
+  .zoom-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.4);
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+
+    &.is-active {
+      background: #fff;
+    }
+  }
+
+  // Light theme: the margins around the zoomed image are light, so flip the
+  // control colours to stay visible.
+  &.theme-white {
+    .zoom-ctrl {
+      color: #1a1a1a;
+      filter: drop-shadow(0 1px 6px rgba(255, 255, 255, 0.6));
+    }
+
+    .zoom-dot {
+      background: rgba(0, 0, 0, 0.3);
+
+      &.is-active {
+        background: #111;
+      }
+    }
+  }
+}
+
+@keyframes nsc-ctrl-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
