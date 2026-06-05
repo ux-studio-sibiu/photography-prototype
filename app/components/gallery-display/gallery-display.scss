@@ -1,9 +1,15 @@
 // Gallery display component styles
 
+@use "@/app/styles/breakpoints" as *;
+
 .gallery-display {
   width: 100%;
-  padding: 60px 40px;
+  padding: 40px 16px;
   background: #f4f3f0;
+
+  @include respond-to("tablet") {
+    padding: 60px 40px;
+  }
 
   &--empty {
     min-height: 300px;
@@ -16,29 +22,46 @@
 }
 
 .gallery-display-title {
-  margin: 0 0 40px;
-  font-size: 2.5rem;
+  margin: 0 0 24px;
+  font-size: 1.8rem;
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #1a1a1a;
   text-align: center;
+
+  @include respond-to("tablet") {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+  }
 }
 
 .gallery-display-grid {
   display: flex;
-  gap: var(--gap, 30px);
+  flex-direction: column;
+  gap: calc(var(--gap, 24px) * 0.66);
   width: 100%;
   margin: 0 auto;
   align-items: flex-start;
   box-sizing: border-box;
+
+  @include respond-to("tablet") {
+    flex-direction: row;
+    gap: var(--gap, 30px);
+  }
 }
 
 .gallery-display-column {
   display: flex;
   flex-direction: column;
-  gap: var(--gap, 30px);
-  min-width: 0; // Allow flex items to shrink below content size
+  gap: calc(var(--gap, 24px) * 0.66);
+  flex: 1 1 100% !important;
+  min-width: 0;
+
+  @include respond-to("tablet") {
+    gap: var(--gap, 30px);
+    flex: auto;
+  }
 }
 
 .gallery-display-figure {
@@ -99,28 +122,6 @@
 
 .gallery-display-item:hover .gallery-display-overlay {
   opacity: 1;
-}
-
-// Mobile - stack columns on smaller screens
-@media (max-width: 768px) {
-  .gallery-display {
-    padding: 40px 16px;
-  }
-
-  .gallery-display-title {
-    font-size: 1.8rem;
-    margin-bottom: 24px;
-  }
-
-  .gallery-display-grid {
-    flex-direction: column;
-    gap: calc(var(--gap, 24px) * 0.66);
-  }
-
-  .gallery-display-column {
-    gap: calc(var(--gap, 24px) * 0.66);
-    flex: 1 1 100% !important; // Stack full width on mobile
-  }
 }
 
 // ─── Modal / Swiper Detail View ───

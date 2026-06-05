@@ -2,21 +2,33 @@
 // Adapted from vue-playground/app/pages/zoom.{vue,scss}
 // Uses jQuery + Zoomooz (loaded at runtime) for the click-to-zoom effect.
 
+@use "@/app/styles/breakpoints" as *;
+
 .nsc--zoom-gallery {
   position: relative;
   width: 100%;
-  height: 100vh;
-  overflow: hidden;
+  height: auto;
+  overflow: visible;
   background: #f4f3f0;
-  margin-top:100px;
-  margin-bottom:300px;
+  margin-top: 100px;
+  margin-bottom: 300px;
+
+  @include respond-to("tablet") {
+    height: 100vh;
+    overflow: hidden;
+  }
 
   // ─── Zoomooz viewport / container ──────────────
   .zoom-viewport {
     position: relative;
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
+
+    @include respond-to("tablet") {
+      height: 100%;
+      overflow: hidden;
+    }
   }
 
   // The zoomable root stays the full viewport size (100% w/h) so Zoomooz sizes
@@ -26,25 +38,36 @@
   .zoom-container {
     position: relative;
     width: 100%;
-    height: 100%;
-    padding: 100px 0;
+    height: auto;
+    padding: 80px 16px;
     cursor: pointer;
-    // NOTE: intentionally no `will-change: transform`. A permanent composited
-    // layer makes Zoomooz's scaled text / SVG arrows / dots blurry (the layer is
-    // rasterised at natural size then stretched). Without it the browser
-    // re-rasterises at the zoomed scale, keeping them crisp at rest.
+
+    @include respond-to("tablet") {
+      height: 100%;
+      padding: 100px 0;
+    }
   }
 
   // ─── Grid ──────────────────────────────────────
   .zoom-grid {
     display: grid;
-    grid-template-columns: 1.6fr 1fr 1.2fr;
-    grid-template-rows: 1.2fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto;
     gap: 30px;
-    height: 100%;
+    height: auto;
     width: 100%;
     max-width: 1600px;
     margin: 0 auto;
+
+    @include respond-to("mobile") {
+      grid-template-columns: 1fr;
+    }
+
+    @include respond-to("tablet") {
+      grid-template-columns: 1.6fr 1fr 1.2fr;
+      grid-template-rows: 1.2fr 1fr;
+      height: 100%;
+    }
   }
 
   // ─── Card ──────────────────────────────────────
@@ -52,25 +75,42 @@
     position: relative;
     overflow: hidden;
     // background: #151515;
-    background:transparent;
+    background: transparent;
+    height: auto;
+    aspect-ratio: 4 / 3;
+
+    @include respond-to("tablet") {
+      height: 100%;
+      aspect-ratio: auto;
+    }
   }
 
   .zoom-card-pair {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
-    height: 100%;
+    height: auto;
+
+    @include respond-to("tablet") {
+      height: 100%;
+    }
   }
 
   .zoom-target {
     cursor: pointer;
     overflow: hidden;
     position: relative;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
     transition: opacity 0.7s ease;
 
     &.flip {
       transform: rotate(180deg);
+    }
+
+    @include respond-to("tablet") {
+      height: 100%;
+      aspect-ratio: auto;
     }
   }
 
@@ -210,42 +250,6 @@
   // Never show it over a zoomed card (placed after :hover so it wins on tie).
   .zoom-target.is-zoomed .zoom-card-overlay {
     opacity: 0;
-  }
-
-  // ─── Mobile ────────────────────────────────────
-  @media (max-width: 768px) {
-    height: auto;
-    overflow: visible;
-
-    .zoom-viewport {
-      height: auto;
-    }
-
-    .zoom-container {
-      padding: 80px 16px;
-    }
-
-    .zoom-grid {
-      grid-template-columns: repeat(2, 1fr);
-      grid-template-rows: auto;
-      height: auto;
-    }
-
-    .zoom-card,
-    .zoom-target {
-      height: auto;
-      aspect-ratio: 4 / 3;
-    }
-
-    .zoom-card-pair {
-      height: auto;
-    }
-  }
-
-  @media (max-width: 480px) {
-    .zoom-grid {
-      grid-template-columns: 1fr;
-    }
   }
 }
 

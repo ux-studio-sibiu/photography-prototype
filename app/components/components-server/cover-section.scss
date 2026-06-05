@@ -1,3 +1,5 @@
+@use "@/app/styles/breakpoints" as *;
+
 #nsc--cover-section {
   height: 100svh;
   width: 100%;
@@ -19,71 +21,63 @@
     top: 0;
     left: 0;
     z-index: 1;
-    pointer-events: none; // let clicks reach the swiper pagination beneath
+    pointer-events: none;
   }
 
   .cover-content {
     position: absolute;
     z-index: 2;
     bottom: 5%;
-    left: 50px;
+    left: 7%;
     transform: translateY(-50%);
-    max-width: 42%;
+    max-width: 80%;
     text-align: left;
     color: #ffffff;
+
+    @include respond-to("tablet") {
+      left: 50px;
+      max-width: 55%;
+    }
+
+    @include respond-to("desktop") {
+      max-width: 42%;
+    }
   }
 
   .cover-title {
     margin: 0;
-    font-size: 64px;
+    font-size: 32px;
     font-weight: 400;
-    letter-spacing: 4px;
+    letter-spacing: 2px;
+
+    @include respond-to("tablet") {
+      font-size: 40px;
+    }
+
+    @include respond-to("desktop") {
+      font-size: 52px;
+      letter-spacing: 4px;
+    }
+
+    @include respond-to("wide") {
+      font-size: 64px;
+    }
   }
 
   .cover-subtitle {
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 400;
     letter-spacing: 3px;
+
+    @include respond-to("tablet") {
+      font-size: 18px;
+    }
   }
 
-  // Social links under the subtitle — white over the cover, left-aligned,
-  // and clickable even if the cover content disables pointer events.
   .cover-social {
     margin-top: 0px;
     color: #fff;
     justify-content: flex-start;
     pointer-events: auto;
-  }
-
-  @media (max-width: 1200px) {
-    .cover-content {
-      max-width: 55%;
-    }
-
-    .cover-title {
-      font-size: 52px;
-    }
-  }
-
-  @media (max-width: 768px) {
-    .cover-content {
-      left: 7%;
-      max-width: 80%;
-    }
-
-    .cover-title {
-      font-size: 40px;
-      letter-spacing: 2px;
-    }
-
-    .cover-subtitle {
-      font-size: 15px;
-    }
-  }
-
-  @media (max-width: 460px) {
-    .cover-title {
-      font-size: 32px;
-    }
   }
 }

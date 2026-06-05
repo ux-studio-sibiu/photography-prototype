@@ -1,16 +1,26 @@
+@use "@/app/styles/breakpoints" as *;
+
 #nsc--footer {
   background: #f4f3f0;
   color: #1a1a1a;
   border-top: 1px solid rgba(0, 0, 0, 0.12);
-  padding: 80px 40px 32px;
+  padding: 56px 24px 28px;
+
+  @include respond-to("tablet") {
+    padding: 80px 40px 32px;
+  }
 
   .footer-inner {
     display: flex;
     flex-wrap: wrap;
-    gap: 60px;
+    gap: 40px;
     justify-content: space-between;
     max-width: 1400px;
     margin: 0 auto;
+
+    @include respond-to("tablet") {
+      gap: 60px;
+    }
   }
 
   .footer-brand {
@@ -34,11 +44,22 @@
   .footer-nav {
     display: flex;
     flex-wrap: wrap;
-    gap: 48px;
+    gap: 32px;
+    width: 100%;
+
+    @include respond-to("tablet") {
+      gap: 48px;
+      width: auto;
+    }
   }
 
   .footer-col {
     min-width: 130px;
+    flex: 1 1 40%;
+
+    @include respond-to("tablet") {
+      flex: auto;
+    }
 
     .col-title {
       display: block;
@@ -105,22 +126,5 @@
     font-size: 0.8rem;
     letter-spacing: 0.06em;
     color: rgba(0, 0, 0, 0.6);
-  }
-
-  @media (max-width: 768px) {
-    padding: 56px 24px 28px;
-
-    .footer-inner {
-      gap: 40px;
-    }
-
-    .footer-nav {
-      gap: 32px;
-      width: 100%;
-    }
-
-    .footer-col {
-      flex: 1 1 40%;
-    }
   }
 }

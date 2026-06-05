@@ -1,18 +1,81 @@
+@use "@/app/styles/breakpoints" as *;
+
 .nav-menu {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 10;
-  padding: 40px 60px;
+  padding: 20px 20px;
   background: transparent;
+
+  @include respond-to("tablet") {
+    padding: 40px 60px;
+  }
+}
+
+.nav-menu-hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  z-index: 11;
+
+  @include respond-to("tablet") {
+    display: none;
+  }
+
+  span {
+    width: 24px;
+    height: 2px;
+    background: #fff;
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  &:has(+ .nav-menu-list.open) span:nth-child(1) {
+    transform: rotate(45deg) translateY(11px);
+  }
+
+  &:has(+ .nav-menu-list.open) span:nth-child(2) {
+    opacity: 0;
+  }
+
+  &:has(+ .nav-menu-list.open) span:nth-child(3) {
+    transform: rotate(-45deg) translateY(-11px);
+  }
 }
 
 .nav-menu-list {
   list-style: none;
   margin: 0;
   padding: 0;
-  display: flex;
-  gap: 50px;
+  display: none;
+  flex-direction: column;
+  gap: 20px;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  padding: 30px 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+  @include respond-to("tablet") {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+    position: static;
+    background: transparent;
+    padding: 0;
+    border: none;
+  }
+
+  &.open {
+    display: flex;
+  }
 }
 
 .nav-menu-item {
@@ -24,17 +87,14 @@
   display: inline-block;
   text-decoration: none;
   color: #fff;
-  // font-size: 0.85rem;
   letter-spacing: 0.1em;
   font-weight: 400;
   text-transform: uppercase;
-  // text-transform: lowercase;
   border-bottom: 2px solid transparent;
-  // padding-bottom: 2px;
+  transition: border-color 0.2s ease;
 
   &:hover {
     border-bottom-color: #ffffff8e;
-    
   }
 }
 

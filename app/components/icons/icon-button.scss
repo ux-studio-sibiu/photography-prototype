@@ -1,5 +1,7 @@
 // ─── Reusable gallery control buttons ───
 
+@use "@/app/styles/breakpoints" as *;
+
 // Base button styles
 .icon-btn {
   display: flex;
@@ -26,11 +28,16 @@
   z-index: 5;
 
   svg {
-    width: 80px;
-    height: 80px;
+    width: 30px;
+    height: 30px;
     stroke-width: 0.5;
     stroke-color: #ccc;
     color: #9c9c9c;
+
+    @include respond-to("tablet") {
+      width: 80px;
+      height: 80px;
+    }
   }
 
   &:hover svg {
@@ -41,7 +48,7 @@
     left: 0;
     padding-left: 30px;
     justify-content: start;
-  
+
   }
 
   &.icon-btn--nav-next {
@@ -69,17 +76,5 @@
 
   &:hover {
     background: rgba(0, 0, 0, 0.25);
-  }
-}
-
-// Mobile sizes
-@media (max-width: 768px) {
-  .icon-btn--nav {
-    width: 20%;
-
-    svg {
-      width: 30px;
-      height: 30px;
-    }
   }
 }
