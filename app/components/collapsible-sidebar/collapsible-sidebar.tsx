@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { PortfolioCategoryType } from "@/types";
 import "./collapsible-sidebar.scss";
 
@@ -10,12 +10,22 @@ interface CollapsibleSidebarProps {
 
 export default function CollapsibleSidebar({ categories }: CollapsibleSidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const sidebarRef = useRef<HTMLElement>(null);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+    if (!isOpen && sidebarRef.current) {
+      setTimeout(() => {
+        sidebarRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 0);
+    }
+  };
 
   return (
-    <aside className="collapsible-sidebar">
+    <aside className="collapsible-sidebar" ref={sidebarRef}>
       <button
         className="collapsible-sidebar-toggle"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={handleToggle}
         aria-expanded={isOpen}
       >
         <span>Portfolio</span>

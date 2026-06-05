@@ -34,18 +34,21 @@
 
   .cover-content {
     position: absolute;
+    width: 100%;
     z-index: 2;
     bottom: 3%;
-    left: 7%;
-  
-    text-align: left;
+    left: 50%;
+    transform: translateX(-50%);
+
+    text-align: center;
     color: #ffffff;
 
     @include respond-to("tablet") {
       left: 50px;
-      bottom: 5%;
+      bottom: 10%;
       max-width: 55%;
-      transform: translateY(-50%);
+      text-align: left;
+      transform: none;
     }
 
     @include respond-to("desktop") {
