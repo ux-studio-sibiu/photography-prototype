@@ -1,0 +1,218 @@
+// Gallery display component styles
+
+.gallery-display {
+  width: 100%;
+  padding: 60px 40px;
+  background: #f4f3f0;
+
+  &--empty {
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #999;
+    font-size: 1.1rem;
+  }
+}
+
+.gallery-display-title {
+  margin: 0 0 40px;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  text-align: center;
+}
+
+.gallery-display-grid {
+  display: flex;
+  gap: var(--gap, 30px);
+  width: 100%;
+  margin: 0 auto;
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+.gallery-display-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap, 30px);
+  min-width: 0; // Allow flex items to shrink below content size
+}
+
+.gallery-display-figure {
+  margin: 0;
+}
+
+.gallery-display-item {
+  outline: none;
+  position: relative;
+  overflow: hidden;
+  line-height: 0;
+  cursor: pointer;
+  background: #ddd;
+}
+
+// Caption under an image in the grid (typography comes from .has-portable-text)
+.gallery-display-caption {
+  margin-top: 8px;
+  margin-bottom: 30px;
+  color: #000;
+  font-size: .85rem;
+}
+
+// Standalone text block (text-only column / item)
+.gallery-display-text {
+  text-align: justify;
+  font-size: 0.85rem;
+  color: #000;
+}
+
+.gallery-display-img {
+  display: block;
+  width: 100%;
+  height: auto; // Maintain aspect ratio
+  object-fit: contain;
+}
+
+// Hover overlay with eye icon
+.gallery-display-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  transition: opacity 0.12s ease-out;
+  pointer-events: none;
+}
+
+.gallery-display-icon {
+  color: rgba(255, 255, 255, 0.87);
+  filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.8));
+  width: 60px;
+  height: 60px;
+}
+
+.gallery-display-item:hover .gallery-display-overlay {
+  opacity: 1;
+}
+
+// Mobile - stack columns on smaller screens
+@media (max-width: 768px) {
+  .gallery-display {
+    padding: 40px 16px;
+  }
+
+  .gallery-display-title {
+    font-size: 1.8rem;
+    margin-bottom: 24px;
+  }
+
+  .gallery-display-grid {
+    flex-direction: column;
+    gap: calc(var(--gap, 24px) * 0.66);
+  }
+
+  .gallery-display-column {
+    gap: calc(var(--gap, 24px) * 0.66);
+    flex: 1 1 100% !important; // Stack full width on mobile
+  }
+}
+
+// ─── Modal / Swiper Detail View ───
+
+.gallery-display-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(244, 243, 240, 0.94);
+}
+
+.gallery-display-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 41;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.gallery-display-modal-content {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  pointer-events: auto;
+}
+
+.gallery-display-detail {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #fff;
+}
+
+.gallery-display-swiper {
+  width: 100%;
+  height: 100%;
+
+  .swiper-slide {
+    position: relative;
+  }
+}
+
+.gallery-display-modal-img-wrapper {
+  position: relative;
+  width: 80%;
+  height: 80%;
+  top: 10%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+// Holds the fill image; the caption sits below it in normal flow.
+.gallery-display-modal-img-box {
+  position: relative;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 0;
+}
+
+.gallery-display-modal-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+// Caption below the modal image (typography comes from .has-portable-text)
+.gallery-display-modal-caption {
+  flex: 0 0 auto;
+  margin-top: 12px;
+  padding: 0 20px;
+  color: #000;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+// Social links pinned to the bottom of the swiper detail view
+.gallery-display-modal-social {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  z-index: 6;
+  display: flex;
+  justify-content: center;
+}

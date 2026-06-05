@@ -29,7 +29,6 @@ export default function ZoomCardSwiper({
   const swiperRef = useRef<SwiperClass | null>(null);
   const [zoomed, setZoomed] = useState(false);
   const [box, setBox] = useState<Box | null>(null);
-  const [theme, setTheme] = useState("");
   const [active, setActive] = useState(0);
 
   const measure = useCallback(() => {
@@ -43,8 +42,6 @@ export default function ZoomCardSwiper({
     const root = rootRef.current;
     const target = root?.closest(".zoom-target");
     if (!target) return;
-
-    setTheme(root?.closest(".theme-white") ? "theme-white" : "");
 
     let settleTimer: ReturnType<typeof setTimeout> | undefined;
     const sync = () => {
@@ -84,7 +81,7 @@ export default function ZoomCardSwiper({
             const stop = (e: React.MouseEvent) => e.stopPropagation();
 
             return (
-              <div className={`zoom-controls ${theme}`.trim()}>
+              <div className="zoom-controls">
                 <button
                   type="button"
                   className="zoom-ctrl zoom-ctrl-prev"

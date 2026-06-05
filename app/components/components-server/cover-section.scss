@@ -3,7 +3,7 @@
   width: 100%;
   position: relative;
   overflow: hidden;
-  background-color: #0a0a0a;
+  background-color: #f4f3f0;
 
   &::after {
     content: "";
@@ -19,18 +19,18 @@
     top: 0;
     left: 0;
     z-index: 1;
+    pointer-events: none; // let clicks reach the swiper pagination beneath
   }
 
   .cover-content {
     position: absolute;
     z-index: 2;
-    top: 50%;
-    left: 6%;
+    bottom: 5%;
+    left: 50px;
     transform: translateY(-50%);
     max-width: 42%;
     text-align: left;
-    color: #000000;
-    pointer-events: none;
+    color: #ffffff;
   }
 
   .cover-title {
@@ -44,6 +44,15 @@
     font-size: 18px;
     font-weight: 400;
     letter-spacing: 3px;
+  }
+
+  // Social links under the subtitle — white over the cover, left-aligned,
+  // and clickable even if the cover content disables pointer events.
+  .cover-social {
+    margin-top: 0px;
+    color: #fff;
+    justify-content: flex-start;
+    pointer-events: auto;
   }
 
   @media (max-width: 1200px) {

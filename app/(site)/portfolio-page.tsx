@@ -25,15 +25,8 @@ const galleryItems: ZoomItem[] = [
   { src: winonaRyder, title: "Winona Ryder, Los Angeles", num: 2 },
 ];
 
-/**
- * Shared portfolio page body. `theme` is applied as a class on the root <main>
- * so /black and /white can re-skin the same markup via SCSS.
- */
-export default async function PortfolioPage({
-  theme = "theme-black",
-}: {
-  theme?: "theme-black" | "theme-white";
-}) {
+/** Shared portfolio page body. */
+export default async function PortfolioPage() {
   // One gallery card per portfolio category, using the category's first photo.
   const categories = await getPortfolioCategories();
 
@@ -54,7 +47,7 @@ export default async function PortfolioPage({
   const pairStarts = usingSanity ? [] : [4];
 
   return (
-    <main id="nsc--main" className={theme}>
+    <main id="nsc--main">
       <CoverSection />
       <ZoomGallery items={items} pairStarts={pairStarts} />
       <FooterSection />

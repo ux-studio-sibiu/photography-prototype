@@ -14,6 +14,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Photography",
   description: "Photography prototype",
+  icons: {
+    icon: "/shutter-favicon.svg",
+  },
 };
 
 export default function SiteLayout({

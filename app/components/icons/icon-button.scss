@@ -1,0 +1,85 @@
+// ─── Reusable gallery control buttons ───
+
+// Base button styles
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #1a1a1a;
+  cursor: pointer;
+  // transition: all 0.2s ease;
+
+  // svg {
+  //   display: block;
+  // }
+}
+
+// Navigation arrows (prev/next)
+.icon-btn--nav {
+  position: absolute;
+  top: 0;
+  width: 20%;
+  height: 100%;
+  z-index: 5;
+
+  svg {
+    width: 80px;
+    height: 80px;
+    stroke-width: 0.5;
+    stroke-color: #ccc;
+    color: #9c9c9c;
+  }
+
+  &:hover svg {
+    color: #000000;
+  }
+
+  &.icon-btn--nav-prev {
+    left: 0;
+    padding-left: 30px;
+    justify-content: start;
+  
+  }
+
+  &.icon-btn--nav-next {
+    padding-left: 30px;
+    right: 0;
+    justify-content: start;
+  }
+}
+
+// Close button (top-right, compact chip style)
+.icon-btn--close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.12);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.25);
+  }
+}
+
+// Mobile sizes
+@media (max-width: 768px) {
+  .icon-btn--nav {
+    width: 20%;
+
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+  }
+}

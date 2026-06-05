@@ -1,45 +1,51 @@
 import CoverSection from "@/app/components/components-server/cover-section";
 import FooterSection from "@/app/components/components-server/footer-section";
-import MotionGallery, {
-  type MotionItem,
-} from "@/app/components/motion-gallery/motion-gallery";
-import { getPortfolioCategories } from "@/sanity/sanity.query";
+import GalleryDisplay from "@/app/components/gallery-display/gallery-display";
+import NavMenu from "@/app/components/nav-menu/nav-menu";
+import SocialLinks from "@/app/components/social-links/social-links";
+import { getPortfolioCategories, getGalleryBySlug } from "@/sanity/sanity.query";
 import "../page.scss";
-import "../white/white.scss"; // light theme (cover + footer + body bg)
-
-// Placeholder images (web-prototypes/photography/images).
-import apartmentWindow from "@/images/Apartment-Window-Pripyat-2004.jpg";
-import fearOfGod1 from "@/images/Fear-of-God-V_I.jpg";
-import fearOfGod6 from "@/images/Fear-of-God-VI-VI.jpg";
-import highway from "@/images/Highway-Development-II-Los-Angeles-2005.jpg";
-import pathway from "@/images/Pathway-Pripyat-Ukraine-2004.jpg";
-import schoolLibrary from "@/images/School-Library-Pripyat-Ukraine-2004.jpg";
-import winonaRyder from "@/images/Winona-Ryder-V-Los-Angeles-USA.jpg";
+import "./gallery-v2.scss";
 
 export const revalidate = 60; // seconds
 
-const placeholderItems: MotionItem[] = [
-  { title: "Pripyat", images: [apartmentWindow, schoolLibrary, pathway] },
-  { title: "Fear of God", images: [fearOfGod1, fearOfGod6] },
-  { title: "Los Angeles", images: [highway, winonaRyder] },
-];
-
 export default async function GalleryV2() {
-  const categories = await getPortfolioCategories();
-
-  const sanityItems: MotionItem[] = (categories ?? [])
-    .filter((c) => c?.photos?.[0]?.url)
-    .map((c) => ({
-      title: c.name || "Untitled",
-      images: c.photos.filter((p) => p?.url).map((p) => p.url),
-    }));
-
-  const items = sanityItems.length > 0 ? sanityItems : placeholderItems;
+  const [categories, gallery] = await Promise.all([
+    getPortfolioCategories(),
+    getGalleryBySlug("portfolio"),
+  ]);
 
   return (
-    <main id="nsc--main" className="theme-white">
+    <main id="nsc--main">
+      <NavMenu
+        items={[
+          { label: "Despre mine", href: "/about" },
+          { label: "Portofoliu", href: "#gallery" },
+          { label: "Calendar", href: "/calendar" },
+          { label: "Contact", href: "/contact" },
+          // { label: "Studio", href: "/gallery/portfolio" },
+        ]}
+      />
       <CoverSection />
-      <MotionGallery items={items} />
+      <div id="gallery" className="gallery-container">
+        <aside className="gallery-sidebar">
+          <div className="gallery-sidebar-content">
+            {categories && categories.length > 0 ? (
+              categories.map((category) => (
+                <div key={category._id} className="gallery-sidebar-item">
+                  {category.name}
+                </div>
+              ))
+            ) : (
+              <div className="gallery-sidebar-empty">Portfolio</div>
+            )}
+          </div>
+        </aside>
+        <GalleryDisplay gallery={gallery}>
+          <SocialLinks />
+        </GalleryDisplay>
+      </div>
+
       <FooterSection />
     </main>
   );

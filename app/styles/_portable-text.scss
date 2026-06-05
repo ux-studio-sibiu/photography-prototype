@@ -1,0 +1,98 @@
+// ─────────────────────────────────────────────────────────────────────────
+// Portable Text (Sanity rich text) — global styling.
+//
+// Apply the `.has-portable-text` class to any element wrapping a
+// <PortableText /> render. Styling here matches the Sanity Studio block
+// preview (Normal / Heading 1–6 / Quote) so the front end reads the same as
+// the editor. Colour is inherited from the surrounding context so it works on
+// both light and dark themes.
+// ─────────────────────────────────────────────────────────────────────────
+
+.has-portable-text {
+  // Reset block flow — children below control their own spacing.
+  > :first-child {
+    margin-top: 0;
+  }
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+
+  // Sizes are em-relative so each container's `font-size` scales the whole
+  // block (e.g. small captions vs. full text columns).
+  p {
+    min-height:12px;
+    margin: 0 0 0.8em;
+    line-height: 1.6;
+    font-weight: 400;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    margin: 1.2em 0 0.5em;
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.6em;
+  }
+
+  h3 {
+    font-size: 1.3em;
+  }
+
+  h4 {
+    font-size: 1.1em;
+  }
+
+  h5 {
+    font-size: 1em;
+  }
+
+  h6 {
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  blockquote {
+    margin: 1em 0;
+    padding: 0.2em 0 0.2em 1em;
+    border-left: 3px solid currentColor;
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  ul,
+  ol {
+    margin: 0 0 0.8em;
+    padding-left: 1.4em;
+  }
+
+  li {
+    margin: 0.2em 0;
+    line-height: 1.6;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  strong {
+    font-weight: 700;
+  }
+
+  em {
+    font-style: italic;
+  }
+}

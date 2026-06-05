@@ -17,6 +17,7 @@ export default function SwiperCover({ images }: { images: { url: string }[] }) {
       fadeEffect={{ crossFade: true }}
       loop={true}
       slidesPerView={1}
+      allowTouchMove={false}
       pagination={{ clickable: true }}
     >
       {images?.map((src, idx) => (

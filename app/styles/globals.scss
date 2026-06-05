@@ -1,5 +1,6 @@
 @use "_modern-normalize" as *;
 @use "_utils" as *;
+@use "_portable-text" as *;
 
 html {
   min-height: 100%;
@@ -15,8 +16,8 @@ body {
   height: 100%;
   min-height: 100%;
   width: 100%;
-  background-color: #0a0a0a;
-  color: #fff;
+  background-color: #f4f3f0;
+  color: #1a1a1a;
 }
 
 .font-default {

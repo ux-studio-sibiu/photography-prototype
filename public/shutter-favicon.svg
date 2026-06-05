@@ -1,0 +1,26 @@
+<svg viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer circle -->
+  <circle cx="128" cy="128" r="121" stroke="currentColor" stroke-width="2" fill="none"/>
+
+  <!-- Shutter blades (6 blades) -->
+  <!-- Blade 1 -->
+  <path d="M 128 128 L 128 45.2 L 197.1 72.9 Z" fill="currentColor" opacity="0.9"/>
+
+  <!-- Blade 2 -->
+  <path d="M 128 128 L 197.1 72.9 L 197.1 183.1 Z" fill="currentColor" opacity="0.8"/>
+
+  <!-- Blade 3 -->
+  <path d="M 128 128 L 197.1 183.1 L 128 210.8 Z" fill="currentColor" opacity="0.7"/>
+
+  <!-- Blade 4 -->
+  <path d="M 128 128 L 128 210.8 L 58.9 183.1 Z" fill="currentColor" opacity="0.6"/>
+
+  <!-- Blade 5 -->
+  <path d="M 128 128 L 58.9 183.1 L 58.9 72.9 Z" fill="currentColor" opacity="0.7"/>
+
+  <!-- Blade 6 -->
+  <path d="M 128 128 L 58.9 72.9 L 128 45.2 Z" fill="currentColor" opacity="0.8"/>
+
+  <!-- Center dot -->
+  <circle cx="128" cy="128" r="18" fill="currentColor"/>
+</svg>
