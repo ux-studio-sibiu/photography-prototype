@@ -1,7 +1,7 @@
 @use "@/app/styles/breakpoints" as *;
 
 #nsc--cover-section {
-  height: 70svh;
+  height: calc(100svh - 94px);
   width: 100%;
   position: relative;
   overflow: hidden;

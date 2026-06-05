@@ -21,15 +21,15 @@ export default function CollapsibleSidebar({ categories }: CollapsibleSidebarPro
         <span>Portfolio</span>
         <svg
           className={`collapsible-icon ${isOpen ? "open" : ""}`}
-          width="20"
-          height="20"
-          viewBox="0 0 20 20"
+          width="30"
+          height="30"
+          viewBox="0 0 30 30"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
         >
-          <line x1="10" y1="5" x2="10" y2="15" />
-          <line x1="5" y1="10" x2="15" y2="10" />
+          <line x1="15" y1="7.5" x2="15" y2="22.5" />
+          <line x1="7.5" y1="15" x2="22.5" y2="15" />
         </svg>
       </button>
 
