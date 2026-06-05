@@ -3,13 +3,20 @@
 import { usePathname } from 'next/navigation';
 import { Modal } from './modal';
 import Calendar from '@/app/components/calendar/calendar';
+import { SocialLinksModal } from '@/app/components/social-links/social-links-modal';
+import '@/app/(site)/about/about.scss';
+import '@/app/(site)/contact/contact.scss';
 
 interface PageModalProps {
   availability?: any;
+  social?: any;
 }
 
-export function PageModal({ availability }: PageModalProps) {
+export function PageModal({ availability, social }: PageModalProps) {
   const pathname = usePathname();
+  const isModalRoute = ['/about', '/calendar', '/contact'].includes(pathname);
+
+  if (!isModalRoute) return null;
 
   const renderContent = () => {
     switch (pathname) {
@@ -32,10 +39,9 @@ export function PageModal({ availability }: PageModalProps) {
 
       case '/calendar':
         return (
-
-              <div className="calendar-page-content">
-                <Calendar availability={availability} />
-              </div>
+          <div className="calendar-page-content">
+            <Calendar availability={availability} />
+          </div>
         );
 
       case '/contact':
@@ -46,6 +52,7 @@ export function PageModal({ availability }: PageModalProps) {
               <p>Email: contact@example.com</p>
               <p>Phone: +40 123 456 7890</p>
               <p>Available for bookings and inquiries.</p>
+              <SocialLinksModal social={social} className="contact-page-social" />
             </div>
           </div>
         );

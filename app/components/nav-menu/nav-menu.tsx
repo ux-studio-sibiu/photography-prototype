@@ -25,7 +25,7 @@ export default function NavMenu({
 
   const handleNavClick = (href: string) => {
     if (pathname === href) {
-      router.back();
+      router.push('/');
     }
   };
 
