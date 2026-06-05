@@ -24,7 +24,7 @@ export default function MobileGallery({ gallery }: MobileGalleryProps) {
   return (
     <div className="mobile-gallery">
       {gallery.columns.map((column, colIdx) => {
-        const images = column.photos?.filter((p) => p.url) || [];
+        const images = column.photos?.filter((p) => p.url) as Array<{ url: string }> || [];
         if (images.length === 0) return null;
 
         return (
