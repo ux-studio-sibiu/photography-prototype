@@ -29,7 +29,6 @@ export default async function Home() {
           { label: "Portofoliu", href: "#gallery" },
           { label: "Calendar", href: "/calendar" },
           { label: "Contact", href: "/contact" },
-          // { label: "Studio", href: "/gallery/portfolio" },
         ]}
       />
       <MobileSocialLinks social={info?.social} />

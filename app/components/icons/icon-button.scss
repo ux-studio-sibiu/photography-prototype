@@ -63,18 +63,24 @@
   position: absolute;
   top: 1rem;
   right: 1rem;
-  width: 40px;
-  height: 40px;
+  width: 60px;
+  height: 60px;
   z-index: 10;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.12);
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 60px;
+    height: 60px;
+    stroke-width: 0.5;
   }
 
-  &:hover {
-    background: rgba(0, 0, 0, 0.25);
+  svg path {
+    fill: #fff;
+    stroke: #000000;
   }
+
+  &:hover svg path {
+    fill: #000000;
+  }
+
 }

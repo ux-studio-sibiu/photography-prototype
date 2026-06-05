@@ -49,6 +49,7 @@ export default function NavMenu({
                 href={item.href}
                 className={`nav-menu-link ${isActive ? "active" : ""}`}
                 onClick={(e) => {
+                  setIsOpen(false);
                   if (isActive) {
                     e.preventDefault();
                     handleNavClick(item.href);

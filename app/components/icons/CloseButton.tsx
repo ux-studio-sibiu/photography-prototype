@@ -14,8 +14,8 @@ export function CloseButton({ onClick, className, ariaLabel }: CloseButtonProps)
       onClick={onClick}
       aria-label={ariaLabel || "Close"}
     >
-      <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M6 6l20 20M26 6L6 26" />
+      <svg aria-hidden="true" viewBox="0 0 32 32">
+        <path d="M24 10l-2-2-6 6-6-6-2 2 6 6-6 6 2 2 6-6 6 6 2-2-6-6z" fill="currentColor" stroke="#000000" strokeWidth="0.5" />
       </svg>
     </button>
   );

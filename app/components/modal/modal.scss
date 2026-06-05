@@ -7,12 +7,17 @@
   top: 100px;
   left: 60px;
   height: calc(100% - 400px);
-  max-width: 90vw;
-  max-height: 90vh;
-  background: #00000070;
-  z-index: 1;
+  background: #0000009a;
+  z-index: 9;
   color: #fff;
   // box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+
+  @media (max-width: 768px) {
+    width: 100vw;
+    top: 0px;
+    left: 0;
+    height: 100vh;
+  }
 
   &::backdrop {
     display: none;

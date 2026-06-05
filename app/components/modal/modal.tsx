@@ -30,7 +30,11 @@ export function Modal({ children }: { children: React.ReactNode }) {
       onClick={handleBackdropClick}
     >
       <div className="modal-content">
-        {/* <button className="modal-close" onClick={handleClose} aria-label="Close modal">✕</button> */}
+        <button className="modal-close" onClick={handleClose} aria-label="Close modal">
+          <svg aria-hidden="true" viewBox="0 0 32 32" width="24" height="24">
+            <path d="M24 10l-2-2-6 6-6-6-2 2 6 6-6 6 2 2 6-6 6 6 2-2-6-6z" fill="currentColor" />
+          </svg>
+        </button>
         {children}
       </div>
     </dialog>

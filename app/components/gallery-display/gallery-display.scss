@@ -105,15 +105,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.55);
+  background: #0000005c;
   opacity: 0;
-  transition: opacity 0.12s ease-out;
+  transition: opacity 0.32s ease-out;
   pointer-events: none;
 }
 
 .gallery-display-icon {
-  color: rgba(255, 255, 255, 0.87);
-  filter: drop-shadow(0 1px 8px rgba(0, 0, 0, 0.8));
+  color: #ffffff9e;
   width: 60px;
   height: 60px;
 }
