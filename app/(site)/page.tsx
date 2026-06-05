@@ -4,15 +4,20 @@ import GalleryDisplay from "@/app/components/gallery-display/gallery-display";
 import MobileGallery from "@/app/components/mobile-gallery/mobile-gallery";
 import NavMenu from "@/app/components/nav-menu/nav-menu";
 import CollapsibleSidebar from "@/app/components/collapsible-sidebar/collapsible-sidebar";
-import { getPortfolioCategories, getGalleryBySlug } from "@/sanity/sanity.query";
+import {
+  getPortfolioCategories,
+  getGalleryBySlug,
+  getGeneralInfo,
+} from "@/sanity/sanity.query";
 import "./page.scss";
 
 export const revalidate = 60; // seconds
 
 export default async function Home() {
-  const [categories, gallery] = await Promise.all([
+  const [categories, gallery, info] = await Promise.all([
     getPortfolioCategories(),
     getGalleryBySlug("portfolio"),
+    getGeneralInfo(),
   ]);
 
   return (
@@ -32,7 +37,7 @@ export default async function Home() {
         <CollapsibleSidebar categories={categories ?? []} />
 
         <div className="gallery-desktop">
-          <GalleryDisplay gallery={gallery} />
+          <GalleryDisplay gallery={gallery} social={info?.social} />
         </div>
 
         <div className="gallery-mobile">

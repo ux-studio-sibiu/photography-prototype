@@ -2,8 +2,10 @@
 
 import Image from "next/image";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
 import type { GalleryType } from "@/types";
 import "swiper/css";
+import "swiper/css/pagination";
 import "./mobile-gallery.scss";
 
 interface MobileGalleryProps {
@@ -30,6 +32,7 @@ export default function MobileGallery({ gallery }: MobileGalleryProps) {
             {/* <h3 className="mobile-gallery-title">{column.weight || `Category ${colIdx + 1}`}</h3> */}
             <Swiper
               className="mobile-gallery-swiper"
+              modules={[Pagination]}
               slidesPerView={1}
               loop={images.length > 1}
               pagination={{ clickable: true }}

@@ -7,7 +7,7 @@ import type { Swiper as SwiperClass } from "swiper/types";
 import { PortableText } from "next-sanity";
 import type { PortableTextBlock } from "@portabletext/types";
 import { NavButton, CloseButton } from "../icons";
-import SocialLinks from "../social-links/social-links";
+import SocialLinksClient from "../social-links/social-links-client";
 import type { GalleryType, GalleryItem } from "@/types";
 import "swiper/css";
 import "./gallery-display.scss";
@@ -16,6 +16,8 @@ export interface GalleryDisplayProps {
   /** Gallery data, fetched on the server and passed in (no client fetch). */
   gallery: GalleryType | null;
   className?: string;
+  /** Social links from Sanity */
+  social?: Record<string, string>;
 }
 
 const isImage = (item: GalleryItem) => item._type === "image" && !!item.url;
@@ -38,6 +40,7 @@ const hasRichText = (blocks?: PortableTextBlock[]) =>
 function GalleryDisplay({
   gallery,
   className = "",
+  social = {},
 }: GalleryDisplayProps) {
   const [selectedColumnIdx, setSelectedColumnIdx] = useState<number | null>(null);
   const [activeImageIdx, setActiveImageIdx] = useState(0);
@@ -213,7 +216,7 @@ function GalleryDisplay({
                 </Swiper>
 
                 <div className="gallery-display-modal-social">
-                  <SocialLinks />
+                  <SocialLinksClient social={social} />
                 </div>
 
                 <CloseButton onClick={() => setSelectedColumnIdx(null)} />
