@@ -5,7 +5,6 @@ import NavMenu from "@/app/components/nav-menu/nav-menu";
 import SocialLinks from "@/app/components/social-links/social-links";
 import { getPortfolioCategories, getGalleryBySlug } from "@/sanity/sanity.query";
 import "./page.scss";
-import "./gallery-v2/gallery-v2.scss";
 
 export const revalidate = 60; // seconds
 
