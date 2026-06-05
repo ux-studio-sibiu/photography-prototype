@@ -1,8 +1,11 @@
 import { Metadata } from "next";
 import GalleryDisplay from "@/app/components/gallery-display/gallery-display";
 import FooterSection from "@/app/components/components-server/footer-section";
-import SocialLinks from "@/app/components/social-links/social-links";
-import { getGalleryBySlug, getAllGallerySlugs } from "@/sanity/sanity.query";
+import {
+  getGalleryBySlug,
+  getAllGallerySlugs,
+  getGeneralInfo,
+} from "@/sanity/sanity.query";
 
 interface GalleryPageProps {
   params: Promise<{ slug: string }>;
@@ -29,13 +32,14 @@ export async function generateMetadata({
 
 export default async function GalleryPage({ params }: GalleryPageProps) {
   const { slug } = await params;
-  const gallery = await getGalleryBySlug(slug);
+  const [gallery, info] = await Promise.all([
+    getGalleryBySlug(slug),
+    getGeneralInfo(),
+  ]);
 
   return (
     <main id="nsc--main">
-      <GalleryDisplay gallery={gallery}>
-        <SocialLinks />
-      </GalleryDisplay>
+      <GalleryDisplay gallery={gallery} social={info?.social} />
       <FooterSection />
     </main>
   );
