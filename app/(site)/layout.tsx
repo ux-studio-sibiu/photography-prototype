@@ -21,12 +21,17 @@ export const metadata: Metadata = {
 
 export default function SiteLayout({
   children,
+  modal,
 }: {
   children: React.ReactNode;
+  modal: React.ReactNode;
 }) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body className={`${poppins.variable} clearfix`}>{children}</body>
+      <body className={`${poppins.variable} clearfix`}>
+        {children}
+        {modal}
+      </body>
     </html>
   );
 }

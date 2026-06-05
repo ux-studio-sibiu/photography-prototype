@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import "./nav-menu.scss";
 
 export interface NavMenuItem {
@@ -18,6 +20,14 @@ export default function NavMenu({
   className = "",
 }: NavMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
+
+  const handleNavClick = (href: string) => {
+    if (pathname === href) {
+      router.back();
+    }
+  };
 
   return (
     <nav className={`nav-menu ${className}`.trim()}>
@@ -31,13 +41,25 @@ export default function NavMenu({
         <span></span>
       </button>
       <ul className={`nav-menu-list ${isOpen ? "open" : ""}`}>
-        {items.map((item) => (
-          <li key={item.href} className="nav-menu-item">
-            <a href={item.href} className="nav-menu-link">
-              {item.label}
-            </a>
-          </li>
-        ))}
+        {items.map((item) => {
+          const isActive = pathname === item.href;
+          return (
+            <li key={item.href} className="nav-menu-item">
+              <Link
+                href={item.href}
+                className={`nav-menu-link ${isActive ? "active" : ""}`}
+                onClick={(e) => {
+                  if (isActive) {
+                    e.preventDefault();
+                    handleNavClick(item.href);
+                  }
+                }}
+              >
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

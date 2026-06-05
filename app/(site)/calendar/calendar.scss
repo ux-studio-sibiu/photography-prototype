@@ -1,8 +1,8 @@
 @use "@/app/styles/breakpoints" as *;
 
 .calendar-page {
-  min-height: 100vh;
-  background: #f4f3f0;
+  // min-height: 100vh;
+  background: transparent;
   padding: 60px 20px;
 
   @include respond-to("tablet") {
@@ -21,7 +21,7 @@
   font-weight: 400;
   letter-spacing: 0.05em;
   text-align: center;
-  color: #1a1a1a;
+  color: #fff;
   text-transform: uppercase;
 
   @include respond-to("tablet") {
@@ -32,18 +32,16 @@
 .calendar-page-subtitle {
   margin: 0 0 50px;
   font-size: 1rem;
-  color: #666;
+  color: rgba(255, 255, 255, 0.8);
   text-align: center;
   line-height: 1.6;
 }
 
 .calendar-page-content {
-  background: #fff;
-  padding: 30px 20px;
-  border: 1px solid #ddd;
+  height:100%;
+  background: rgba(0, 0, 0, 0.3);
+  padding: 70px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 4px;
 
-  @include respond-to("tablet") {
-    padding: 40px;
-  }
 }
