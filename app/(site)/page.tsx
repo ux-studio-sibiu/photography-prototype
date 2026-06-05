@@ -3,6 +3,7 @@ import FooterSection from "@/app/components/components-server/footer-section";
 import GalleryDisplay from "@/app/components/gallery-display/gallery-display";
 import MobileGallery from "@/app/components/mobile-gallery/mobile-gallery";
 import NavMenu from "@/app/components/nav-menu/nav-menu";
+import MobileSocialLinks from "@/app/components/social-links/mobile-social-links";
 import CollapsibleSidebar from "@/app/components/collapsible-sidebar/collapsible-sidebar";
 import {
   getPortfolioCategories,
@@ -31,6 +32,7 @@ export default async function Home() {
           // { label: "Studio", href: "/gallery/portfolio" },
         ]}
       />
+      <MobileSocialLinks social={info?.social} />
       <CoverSection />
 
       <div id="gallery" className="gallery-container">

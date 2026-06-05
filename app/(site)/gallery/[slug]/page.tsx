@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import GalleryDisplay from "@/app/components/gallery-display/gallery-display";
 import FooterSection from "@/app/components/components-server/footer-section";
+import MobileSocialLinks from "@/app/components/social-links/mobile-social-links";
 import {
   getGalleryBySlug,
   getAllGallerySlugs,
@@ -39,6 +40,7 @@ export default async function GalleryPage({ params }: GalleryPageProps) {
 
   return (
     <main id="nsc--main">
+      <MobileSocialLinks social={info?.social} />
       <GalleryDisplay gallery={gallery} social={info?.social} />
       <FooterSection />
     </main>

@@ -14,14 +14,15 @@
 }
 
 .nav-menu-hamburger {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  display: block;
+  width: 24px;
+  height: 24px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 0;
   z-index: 11;
+  position: relative;
 
   @include respond-to("tablet") {
     display: none;
@@ -31,12 +32,29 @@
     width: 24px;
     height: 2px;
     background: #fff;
-    transition: all 0.3s ease;
+    transition: all 0.15s ease;
     transform-origin: center;
+    position: absolute;
+    left: 0;
+  }
+
+  span:nth-child(1) {
+    top: 0;
+  }
+
+  span:nth-child(2) {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  span:nth-child(3) {
+    top: 100%;
+    transform: translateY(-100%);
   }
 
   &:has(+ .nav-menu-list.open) span:nth-child(1) {
-    transform: rotate(45deg) translateY(11px);
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
   }
 
   &:has(+ .nav-menu-list.open) span:nth-child(2) {
@@ -44,7 +62,8 @@
   }
 
   &:has(+ .nav-menu-list.open) span:nth-child(3) {
-    transform: rotate(-45deg) translateY(-11px);
+    top: 50%;
+    transform: translateY(-50%) rotate(-45deg);
   }
 }
 
@@ -56,11 +75,13 @@
   flex-direction: column;
   gap: 20px;
   position: fixed;
-  top: 60px;
+  height: 100vh;
+  top: 0px;
   left: 0;
   right: 0;
-  background: rgba(0, 0, 0, 0.95);
+  background: rgba(0, 0, 0, 0.75);
   padding: 30px 20px;
+  padding-top: 100px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 
   @include respond-to("tablet") {

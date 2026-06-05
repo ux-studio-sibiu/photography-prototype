@@ -212,6 +212,10 @@
   right: 0;
   bottom: 28px;
   z-index: 6;
-  display: flex;
+  display: none;
   justify-content: center;
+
+  @include respond-to("tablet") {
+    display: flex;
+  }
 }

@@ -28,19 +28,25 @@
     pointer-events: none;
   }
 
+  .swiper-pagination-bullet {
+    display: none;
+  }
+
   .cover-content {
     position: absolute;
     z-index: 2;
-    bottom: 5%;
+    bottom: 3%;
     left: 7%;
-    transform: translateY(-50%);
-    max-width: 80%;
+    
+    max-width: 90px;
     text-align: left;
     color: #ffffff;
 
     @include respond-to("tablet") {
       left: 50px;
+      bottom: 5%;
       max-width: 55%;
+      transform: translateY(-50%);
     }
 
     @include respond-to("desktop") {
@@ -53,9 +59,12 @@
     font-size: 32px;
     font-weight: 400;
     letter-spacing: 2px;
+    line-height:40px;
+
 
     @include respond-to("tablet") {
       font-size: 40px;
+      line-height:initial;
     }
 
     @include respond-to("desktop") {

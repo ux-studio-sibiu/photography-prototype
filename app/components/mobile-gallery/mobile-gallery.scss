@@ -67,6 +67,11 @@
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
+    display: none;
+
+    @include respond-to("tablet") {
+      display: inline-block;
+    }
 
     &:hover {
       background: rgba(255, 255, 255, 0.8);
