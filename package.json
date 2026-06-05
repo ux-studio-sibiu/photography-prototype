@@ -9,20 +9,20 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@sanity/image-url": "^2.0.3",
-    "@sanity/vision": "^5.5.0",
-    "next": "^16.1.4",
-    "next-sanity": "^12.0.14",
-    "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "sanity": "^5.5.0",
-    "sass": "^1.89.2",
-    "swiper": "^12.0.3"
+    "@sanity/image-url": "^2.1.1",
+    "@sanity/vision": "^5.28.0",
+    "next": "^16.2.7",
+    "next-sanity": "^13.0.8",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "sanity": "^5.28.0",
+    "sass": "^1.100.0",
+    "swiper": "^12.2.0"
   },
   "devDependencies": {
     "@types/node": "^25",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "typescript": "^5.9.3"
+    "typescript": "^6.0.3"
   }
 }
