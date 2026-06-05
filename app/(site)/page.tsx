@@ -1,8 +1,9 @@
 import CoverSection from "@/app/components/components-server/cover-section";
 import FooterSection from "@/app/components/components-server/footer-section";
 import GalleryDisplay from "@/app/components/gallery-display/gallery-display";
+import MobileGallery from "@/app/components/mobile-gallery/mobile-gallery";
 import NavMenu from "@/app/components/nav-menu/nav-menu";
-import SocialLinks from "@/app/components/social-links/social-links";
+import CollapsibleSidebar from "@/app/components/collapsible-sidebar/collapsible-sidebar";
 import { getPortfolioCategories, getGalleryBySlug } from "@/sanity/sanity.query";
 import "./page.scss";
 
@@ -26,23 +27,17 @@ export default async function Home() {
         ]}
       />
       <CoverSection />
+
       <div id="gallery" className="gallery-container">
-        <aside className="gallery-sidebar">
-          <div className="gallery-sidebar-content">
-            {categories && categories.length > 0 ? (
-              categories.map((category) => (
-                <div key={category._id} className="gallery-sidebar-item">
-                  {category.name}
-                </div>
-              ))
-            ) : (
-              <div className="gallery-sidebar-empty">Portfolio</div>
-            )}
-          </div>
-        </aside>
-        <GalleryDisplay gallery={gallery}>
-          <SocialLinks />
-        </GalleryDisplay>
+        <CollapsibleSidebar categories={categories ?? []} />
+
+        <div className="gallery-desktop">
+          <GalleryDisplay gallery={gallery} />
+        </div>
+
+        <div className="gallery-mobile">
+          <MobileGallery gallery={gallery} />
+        </div>
       </div>
 
       <FooterSection />

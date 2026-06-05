@@ -1,0 +1,62 @@
+@use "@/app/styles/breakpoints" as *;
+
+.mobile-gallery {
+  width: 100%;
+  background: #f4f3f0;
+  padding: 20px 0;
+}
+
+.mobile-gallery--empty {
+  padding: 60px 20px;
+  text-align: center;
+  color: #999;
+}
+
+.mobile-gallery-category {
+  margin-bottom: 16px;
+  padding: 0 16px;
+}
+
+.mobile-gallery-title {
+  margin: 0 0 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #1a1a1a;
+}
+
+.mobile-gallery-swiper {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+
+  .swiper-slide {
+    position: relative;
+  }
+
+  .swiper-pagination {
+    bottom: 8px;
+  }
+
+  .swiper-pagination-bullet {
+    background: rgba(0, 0, 0, 0.3);
+    opacity: 1;
+
+    &.swiper-pagination-bullet-active {
+      background: rgba(0, 0, 0, 0.7);
+    }
+  }
+}
+
+.mobile-gallery-slide {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #ddd;
+}
+
+.mobile-gallery-img {
+  object-fit: cover;
+  object-position: center;
+}

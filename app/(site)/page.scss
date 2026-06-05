@@ -17,66 +17,32 @@
   }
 }
 
-.gallery-sidebar {
-  width: 100%;
+aside {
   flex-shrink: 0;
-  padding: 40px 20px;
-  background: #f4f3f0;
-  overflow-y: auto;
-  border-bottom: 1px solid #ddd;
 
   @include respond-to("tablet") {
     width: 250px;
-    padding: 60px 30px;
-    border-right: none;
-    border-bottom: none;
     position: sticky;
     top: 0;
     height: 100vh;
+    overflow-y: auto;
   }
 }
 
-.gallery-sidebar-content {
-  display: flex;
-  flex-direction: row;
-  gap: 30px;
-  flex-wrap: wrap;
+.gallery-desktop {
+  display: none;
 
   @include respond-to("tablet") {
-    flex-direction: column;
-    gap: 12px;
-    flex-wrap: nowrap;
-  }
-}
-
-.gallery-sidebar-item {
-  font-size: 0.95rem;
-  letter-spacing: 0.05em;
-  color: #1a1a1a;
-  font-weight: 400;
-  line-height: 1.2;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-  border-bottom: none;
-  padding-bottom: 0;
-  flex: 0 1 auto;
-
-  &:hover {
-    opacity: 0.6;
-  }
-
-  @include respond-to("tablet") {
+    display: block;
     flex: 1;
+    width: 100%;
   }
 }
 
-.gallery-sidebar-empty {
-  font-size: 0.95rem;
-  color: #999;
-  font-weight: 400;
-}
-
-#gallery > section {
-  flex: 1;
+.gallery-mobile {
   width: 100%;
+
+  @include respond-to("tablet") {
+    display: none;
+  }
 }
