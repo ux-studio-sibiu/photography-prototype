@@ -69,7 +69,8 @@ function GalleryDisplay({
   // Calculate total weight and column widths
   const totalWeight = gallery.columns.reduce((sum, col) => sum + (col.weight || 1), 0);
   const numColumns = gallery.columns.length;
-  const gap = gallery.gap || 30;
+  // Per-column share of the inter-column gaps, so columns + gaps = 100%.
+  const gapFactor = numColumns > 0 ? (numColumns - 1) / numColumns : 0;
   const columnWidths = gallery.columns.map((col) => ((col.weight || 1) / totalWeight) * 100);
 
   return (
@@ -79,8 +80,9 @@ function GalleryDisplay({
       <div
         className="gallery-display-grid"
         style={{
-          "--gap": `${gallery.gap || 30}px`,
-        } as React.CSSProperties & { "--gap": string }}
+          // Unitless base; the responsive --gap is derived from it in SCSS.
+          "--gap-base": `${gallery.gap ?? 30}`,
+        } as React.CSSProperties & { "--gap-base": string }}
       >
         {gallery.columns.map((column, colIdx) => {
           // Images-only list drives the modal swiper; track each image's index
@@ -93,7 +95,7 @@ function GalleryDisplay({
               key={colIdx}
               className="gallery-display-column"
               style={{
-                flex: `0 0 calc(${columnWidths[colIdx]}% - ${((numColumns - 1) * gap) / numColumns}px)`,
+                flex: `0 0 calc(${columnWidths[colIdx]}% - var(--gap) * ${gapFactor})`,
               }}
             >
               {items.map((item, idx) => {

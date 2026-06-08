@@ -37,9 +37,17 @@
 }
 
 .gallery-display-grid {
+  // Gap scales with the viewport: full Sanity value at >= 1900px, shrinking
+  // proportionally below that, with a floor of 30% of the value.
+  --gap: clamp(
+    calc(var(--gap-base, 30) * 0.3px),
+    calc(var(--gap-base, 30) * 100vw / 1900),
+    calc(var(--gap-base, 30) * 1px)
+  );
+
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap, 24px) * 0.66);
+  gap: var(--gap);
   width: 100%;
   margin: 0 auto;
   align-items: flex-start;
@@ -47,19 +55,14 @@
 
   @include respond-to("tablet") {
     flex-direction: row;
-    gap: var(--gap, 30px);
   }
 }
 
 .gallery-display-column {
   display: flex;
   flex-direction: column;
-  gap: calc(var(--gap, 24px) * 0.66);
+  gap: var(--gap); // inherits the responsive --gap from the grid
   min-width: 0;
-
-  @include respond-to("tablet") {
-    gap: var(--gap, 30px);
-  }
 }
 
 .gallery-display-figure {
@@ -90,7 +93,31 @@
   color: #000;
   padding: 30px;
   border-radius: 10px;
-  background:#ccc;
+  background:#dfdfdf;
+
+  // Blinking terminal-style cursor after every heading.
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    &::after {
+      content: "_";
+      margin-left: 0.1em;
+      animation: gallery-text-blink 1s step-end infinite;
+    }
+  }
+}
+
+@keyframes gallery-text-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
 }
 
 .gallery-display-img {

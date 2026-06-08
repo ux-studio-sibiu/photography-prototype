@@ -13,8 +13,15 @@ import "./page.scss";
 
 export const revalidate = 60; // seconds
 
-export default async function Home() {
-  const [categories, galleries, info] = await Promise.all([
+const DEFAULT_SLUG = "portfolio";
+
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ c?: string }>;
+}) {
+  const [{ c }, categories, galleries, info] = await Promise.all([
+    searchParams,
     getPortfolioCategories(),
     getAllGalleries(),
     getGeneralInfo(),
@@ -25,6 +32,10 @@ export default async function Home() {
   (galleries ?? []).forEach((g) => {
     if (g?.slug?.current) galleriesBySlug[g.slug.current] = g;
   });
+
+  // Render the requested gallery (?c=) on the server so it shows immediately —
+  // no flash of the default gallery before the client swaps.
+  const initialSlug = c && galleriesBySlug[c] ? c : DEFAULT_SLUG;
 
   return (
     <main id="nsc--main">
@@ -43,7 +54,8 @@ export default async function Home() {
         categories={categories ?? []}
         galleries={galleriesBySlug}
         social={info?.social}
-        initialSlug="portfolio"
+        initialSlug={initialSlug}
+        defaultSlug={DEFAULT_SLUG}
       />
 
       <FooterSection />

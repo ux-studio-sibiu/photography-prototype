@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import CollapsibleSidebar from "../collapsible-sidebar/collapsible-sidebar";
 import GalleryDisplay from "../gallery-display/gallery-display";
 import MobileGallery from "../mobile-gallery/mobile-gallery";
@@ -11,8 +11,10 @@ interface GalleryBrowserProps {
   /** All linkable galleries, keyed by slug (preloaded on the server). */
   galleries: Record<string, GalleryType>;
   social?: Record<string, string>;
-  /** Gallery shown on first load (and when the URL has no ?c=). */
+  /** Gallery to show on first render (server-resolved from ?c=). */
   initialSlug?: string;
+  /** Canonical default gallery — shown for the clean URL (no ?c=). */
+  defaultSlug?: string;
 }
 
 /**
@@ -26,31 +28,35 @@ export default function GalleryBrowser({
   galleries,
   social,
   initialSlug = "portfolio",
+  defaultSlug = "portfolio",
 }: GalleryBrowserProps) {
   const [active, setActive] = useState(initialSlug);
+  const desktopRef = useRef<HTMLDivElement>(null);
 
   // Sync from the URL on mount and on back/forward navigation.
   useEffect(() => {
     const read = () => {
       const c = new URLSearchParams(window.location.search).get("c");
-      setActive(c && galleries[c] ? c : initialSlug);
+      setActive(c && galleries[c] ? c : defaultSlug);
     };
     read();
     window.addEventListener("popstate", read);
     return () => window.removeEventListener("popstate", read);
-  }, [galleries, initialSlug]);
+  }, [galleries, defaultSlug]);
 
   const select = (slug: string) => {
     if (!galleries[slug]) return;
     setActive(slug);
     const url =
-      slug === initialSlug
+      slug === defaultSlug
         ? window.location.pathname + window.location.hash
         : `?c=${slug}`;
     window.history.pushState(null, "", url);
+    // Bring the gallery to the top of the viewport after switching.
+    desktopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
-  const gallery = galleries[active] ?? galleries[initialSlug] ?? null;
+  const gallery = galleries[active] ?? galleries[defaultSlug] ?? null;
 
   return (
     <div id="gallery" className="gallery-container">
@@ -60,7 +66,7 @@ export default function GalleryBrowser({
         onSelect={select}
       />
 
-      <div className="gallery-desktop">
+      <div className="gallery-desktop" ref={desktopRef}>
         <GalleryDisplay gallery={gallery} social={social} />
       </div>
 
