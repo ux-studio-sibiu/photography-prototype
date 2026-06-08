@@ -1,0 +1,137 @@
+@use "@/app/styles/breakpoints" as *;
+
+.testimonials-row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  overflow: hidden;
+  border-top: 1px solid #ececec;
+  border-bottom: 1px solid #ececec;
+
+  @include respond-to("tablet") {
+    flex-direction: row;
+    max-height: 500px;
+  }
+}
+
+// ─── Green figures panel ───
+.testimonials-row-stats {
+  flex: 0 0 auto;
+  background: linear-gradient(155deg, #d4f56a 0%, #b6ec2e 100%);
+  padding: 36px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; // vertically center the figures within the panel
+
+  @include respond-to("tablet") {
+    flex: 0 0 32%;
+    max-width: 32%;
+    padding: 48px 44px;
+  }
+}
+
+.testimonials-row-stats-title {
+  margin: 0 0 20px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.testimonials-row-stats-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.testimonials-row-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  color: #111;
+  padding: 14px 0;
+
+  & + & {
+    border-top: 1px solid rgba(0, 0, 0, 0.14);
+  }
+}
+
+.testimonials-row-stat-value {
+  font-size: 2.4rem;
+  font-weight: 300;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+
+  @include respond-to("tablet") {
+    font-size: clamp(2.2rem, 3.4vw, 3rem);
+  }
+}
+
+.testimonials-row-stat-label {
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: rgba(0, 0, 0, 0.62);
+}
+
+// ─── Testimonial cards ───
+.testimonials-row-cards {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  @include respond-to("tablet") {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.testimonials-row-card {
+  margin: 0;
+  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  border-bottom: 1px solid #ececec;
+  transition: background 0.25s ease;
+
+  @include respond-to("tablet") {
+    border-bottom: none;
+    border-left: 1px solid #ececec;
+  }
+
+  &:hover {
+    background: #fafafa;
+  }
+}
+
+.testimonials-row-mark {
+  font-size: 2rem;
+  line-height: 0.5;
+  font-weight: 700;
+  color: #111;
+}
+
+.testimonials-row-quote {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #5f5f5f;
+  flex: 1 1 auto;
+
+  // Keep the card content within the 500px section.
+  display: -webkit-box;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.testimonials-row-name {
+  align-self: flex-start;
+  padding-top: 6px;
+  border-top: 2px solid #bdee3e; // green accent under the name
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #111;
+}

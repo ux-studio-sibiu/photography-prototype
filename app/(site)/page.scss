@@ -18,7 +18,7 @@
   }
 }
 
-aside {
+.collapsible-sidebar {
   flex-shrink: 0;
 
   @include respond-to("tablet") {

@@ -95,4 +95,47 @@
     justify-content: flex-start;
     pointer-events: auto;
   }
+
+  // Stylish cover quote — top area, balancing the bottom title.
+  .cover-quote {
+    position: absolute;
+    z-index: 2;
+    top: 11%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    margin: 0;
+    text-align: center;
+    font-family: Georgia, "Times New Roman", serif;
+    font-style: italic;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.92);
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.55);
+
+    &::before {
+      content: "\201C";
+      display: block;
+      font-size: 3rem;
+      line-height: 0.5;
+      margin-bottom: 10px;
+      opacity: 0.55;
+    }
+
+    @include respond-to("tablet") {
+      left: 50px;
+      transform: none;
+      width: auto;
+      max-width: 44%;
+      top: 13%;
+      text-align: left;
+      font-size: 1.25rem;
+      line-height: 1.7;
+    }
+
+    @include respond-to("desktop") {
+      max-width: 38%;
+      font-size: 1.45rem;
+    }
+  }
 }

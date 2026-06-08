@@ -52,8 +52,9 @@ export default function GalleryBrowser({
         ? window.location.pathname + window.location.hash
         : `?c=${slug}`;
     window.history.pushState(null, "", url);
-    // Bring the gallery to the top of the viewport after switching.
-    desktopRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    // Bring the gallery to the top of the viewport after switching (instant —
+    // "instant" overrides the site's CSS scroll-behavior: smooth).
+    desktopRef.current?.scrollIntoView({ behavior: "instant", block: "start" });
   };
 
   const gallery = galleries[active] ?? galleries[defaultSlug] ?? null;

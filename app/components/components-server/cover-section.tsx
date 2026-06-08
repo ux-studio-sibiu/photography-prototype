@@ -13,8 +13,13 @@ export default async function CoverSection() {
 
   return (
     <div id="nsc--cover-section" className="overlay">
-      {/* background slideshow */}
+   
       {images.length > 0 && <SwiperCover images={images} />}
+
+      {/* <blockquote className="cover-quote">
+        Photography teaches you to slow down and pay attention. The most
+        meaningful moments are often the ones that would otherwise go unnoticed.
+      </blockquote> */}
 
       <div className="cover-content">
         <h1 className="cover-title text-uppercase">{title}</h1>
