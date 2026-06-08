@@ -49,7 +49,15 @@ export default function NavMenu({
                 href={item.href}
                 className={`nav-menu-link ${isActive ? "active" : ""}`}
                 onClick={(e) => {
+                  // Drop focus so the tapped link doesn't retain a sticky
+                  // focus/hover style on touch devices.
+                  e.currentTarget.blur();
                   setIsOpen(false);
+                  // In-page "Portofoliu" anchor also opens the portfolio
+                  // sidebar (mobile) and scrolls it into view.
+                  if (item.href === "#gallery") {
+                    window.dispatchEvent(new Event("nsc:open-portfolio"));
+                  }
                   if (isActive) {
                     e.preventDefault();
                     handleNavClick(item.href);

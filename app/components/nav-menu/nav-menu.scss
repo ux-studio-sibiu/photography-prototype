@@ -113,9 +113,15 @@
   font-weight: 400;
   text-transform: uppercase;
   border-bottom: 2px solid transparent;
+  // Remove the lingering grey/blue tap flash on mobile webkit.
+  -webkit-tap-highlight-color: transparent;
 
-  &:hover {
-    border-bottom-color: #ffffff8e;
+  // Only on real pointers (mouse) — on touch, :hover sticks after a tap until
+  // you tap elsewhere, leaving the underline lingering on the clicked link.
+  @media (hover: hover) {
+    &:hover {
+      border-bottom-color: #ffffff8e;
+    }
   }
 
   &.active {

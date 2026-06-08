@@ -31,6 +31,23 @@ export default function CollapsibleSidebar({
     }
   };
 
+  // Top-nav "Portofoliu" (#gallery) asks the portfolio sidebar to open and
+  // scroll into view — on mobile, where it's collapsed by default.
+  useEffect(() => {
+    const openPortfolio = () => {
+      if (!window.matchMedia("(max-width: 767px)").matches) return;
+      setIsOpen(true);
+      setTimeout(() => {
+        sidebarRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }, 80);
+    };
+    window.addEventListener("nsc:open-portfolio", openPortfolio);
+    return () => window.removeEventListener("nsc:open-portfolio", openPortfolio);
+  }, []);
+
   // Keep the group containing the active gallery expanded (single open).
   useEffect(() => {
     if (!activeSlug) return;
