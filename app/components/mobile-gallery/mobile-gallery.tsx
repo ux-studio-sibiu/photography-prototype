@@ -24,7 +24,7 @@ export default function MobileGallery({ gallery }: MobileGalleryProps) {
   return (
     <div className="mobile-gallery">
       {gallery.columns.map((column, colIdx) => {
-        const images = column.photos?.filter((p) => p.url) as Array<{ url: string }> || [];
+        const images = (column.photos ?? []).filter((p) => p.url);
         if (images.length === 0) return null;
 
         return (
@@ -42,11 +42,13 @@ export default function MobileGallery({ gallery }: MobileGalleryProps) {
                 <SwiperSlide key={imgIdx}>
                   <div className="mobile-gallery-slide">
                     <Image
-                      src={image.url}
+                      src={image.url!}
                       alt={`Gallery image ${imgIdx + 1}`}
                       fill
                       className="mobile-gallery-img"
                       sizes="100vw"
+                      placeholder={image.lqip ? "blur" : "empty"}
+                      blurDataURL={image.lqip}
                     />
                   </div>
                 </SwiperSlide>

@@ -8,7 +8,11 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination } from "swiper/modules";
 import Image from "next/image";
 
-export default function SwiperCover({ images }: { images: { url: string }[] }) {
+export default function SwiperCover({
+  images,
+}: {
+  images: { url: string; lqip?: string }[];
+}) {
   return (
     <Swiper
       className="nsc--swiper-cover"
@@ -29,6 +33,8 @@ export default function SwiperCover({ images }: { images: { url: string }[] }) {
             fill
             priority={idx === 0}
             sizes="100vw"
+            placeholder={src.lqip ? "blur" : "empty"}
+            blurDataURL={src.lqip}
           />
         </SwiperSlide>
       ))}

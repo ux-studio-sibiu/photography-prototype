@@ -1,15 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
-import { Swiper, SwiperSlide } from "swiper/react";
-import type { Swiper as SwiperClass } from "swiper/types";
 import { PortableText } from "next-sanity";
-import type { PortableTextBlock } from "@portabletext/types";
-import { NavButton, CloseButton } from "../icons";
-import SocialLinksClient from "../social-links/social-links-client";
-import type { GalleryType, GalleryItem } from "@/types";
-import "swiper/css";
+import type { GalleryType } from "@/types";
+import GalleryModal from "./gallery-modal";
+import { isImage, hasRichText } from "./helpers";
 import "./gallery-display.scss";
 
 export interface GalleryDisplayProps {
@@ -20,22 +16,9 @@ export interface GalleryDisplayProps {
   social?: Record<string, string>;
 }
 
-const isImage = (item: GalleryItem) => item._type === "image" && !!item.url;
-
-// True only when the rich text actually contains visible characters.
-const hasRichText = (blocks?: PortableTextBlock[]) =>
-  Array.isArray(blocks) &&
-  blocks.some((b) =>
-    b._type === "block"
-      ? ((b.children as Array<{ text?: string }> | undefined) ?? []).some(
-          (c) => c.text?.trim(),
-        )
-      : true,
-  );
-
 /**
  * Displays a gallery's columns + images (data is server-fetched and passed in).
- * Clicking any image opens a swiper modal for viewing the full column.
+ * Clicking any image opens the lightbox (GalleryModal) for the full column.
  */
 function GalleryDisplay({
   gallery,
@@ -43,17 +26,7 @@ function GalleryDisplay({
   social = {},
 }: GalleryDisplayProps) {
   const [selectedColumnIdx, setSelectedColumnIdx] = useState<number | null>(null);
-  const [activeImageIdx, setActiveImageIdx] = useState(0);
-  const [swiper, setSwiper] = useState<SwiperClass | null>(null);
-
-  useEffect(() => {
-    if (selectedColumnIdx == null) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedColumnIdx(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [selectedColumnIdx]);
+  const [openImageIndex, setOpenImageIndex] = useState(0);
 
   if (!gallery || !gallery.columns || gallery.columns.length === 0) {
     return (
@@ -62,9 +35,6 @@ function GalleryDisplay({
       </div>
     );
   }
-
-  const column =
-    selectedColumnIdx != null ? gallery.columns[selectedColumnIdx] : null;
 
   // Calculate total weight and column widths
   const totalWeight = gallery.columns.reduce((sum, col) => sum + (col.weight || 1), 0);
@@ -117,7 +87,7 @@ function GalleryDisplay({
                 const imageIndex = columnImages.indexOf(item);
                 const open = () => {
                   setSelectedColumnIdx(colIdx);
-                  setActiveImageIdx(Math.max(0, imageIndex));
+                  setOpenImageIndex(Math.max(0, imageIndex));
                 };
 
                 return (
@@ -139,6 +109,8 @@ function GalleryDisplay({
                         height={item.height ?? 1000}
                         className="gallery-display-img"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        placeholder={item.lqip ? "blur" : "empty"}
+                        blurDataURL={item.lqip}
                       />
 
                       {/* Hover overlay with eye icon */}
@@ -171,66 +143,15 @@ function GalleryDisplay({
         })}
       </div>
 
-      {/* Swiper modal */}
-      {column && selectedColumnIdx != null && (
-        <>
-          <div className="gallery-display-backdrop" />
-
-          <div className="gallery-display-modal">
-            <div className="gallery-display-modal-content">
-              <NavButton
-                direction="prev"
-                onClick={() => swiper?.slidePrev()}
-              />
-
-              <div className="gallery-display-detail">
-                <Swiper
-                  className="gallery-display-swiper"
-                  modules={[]}
-                  loop
-                  slidesPerView={1}
-                  allowTouchMove={false}
-                  speed={0}
-                  initialSlide={activeImageIdx}
-                  onSwiper={setSwiper}
-                  onSlideChange={(s) => setActiveImageIdx(s.realIndex)}
-                >
-                  {(column.photos ?? []).filter(isImage).map((photo, idx) => (
-                    <SwiperSlide key={idx}>
-                      <div className="gallery-display-modal-img-wrapper">
-                        <div className="gallery-display-modal-img-box">
-                          <Image
-                            src={photo.url!}
-                            alt={`${gallery.name} image ${idx + 1}`}
-                            className="gallery-display-modal-img"
-                            fill
-                            sizes="80vw"
-                          />
-                        </div>
-                        {hasRichText(photo.description) && (
-                          <div className="gallery-display-modal-caption has-portable-text">
-                            <PortableText value={photo.description!} />
-                          </div>
-                        )}
-                      </div>
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-
-                <div className="gallery-display-modal-social">
-                  <SocialLinksClient social={social} />
-                </div>
-
-                <CloseButton onClick={() => setSelectedColumnIdx(null)} />
-              </div>
-
-              <NavButton
-                direction="next"
-                onClick={() => swiper?.slideNext()}
-              />
-            </div>
-          </div>
-        </>
+      {/* Lightbox for the selected column's images */}
+      {selectedColumnIdx != null && (
+        <GalleryModal
+          images={(gallery.columns[selectedColumnIdx].photos ?? []).filter(isImage)}
+          initialIndex={openImageIndex}
+          galleryName={gallery.name}
+          social={social}
+          onClose={() => setSelectedColumnIdx(null)}
+        />
       )}
     </section>
   );

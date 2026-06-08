@@ -2,7 +2,7 @@ export type SiteInfoType = {
   _id: string;
   coverTitle: string;
   coverSubtitle: string;
-  coverImages: { url: string }[];
+  coverImages: { url: string; lqip?: string }[];
   email?: string;
   phoneNumber?: string;
   social?: {
@@ -45,6 +45,8 @@ export type GalleryItem = {
   url?: string;
   width?: number;
   height?: number;
+  /** Low-quality image placeholder (base64) for blur-up. */
+  lqip?: string;
   description?: PortableTextBlock[];
   // Text item
   text?: PortableTextBlock[];

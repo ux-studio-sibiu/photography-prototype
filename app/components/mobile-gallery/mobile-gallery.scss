@@ -4,6 +4,24 @@
   width: 100%;
   background: #f4f3f0;
   padding: 20px 0;
+
+  // Fade/rise in on mount (re-runs on each gallery switch via key remount).
+  animation: mobile-gallery-in 0.35s ease both;
+}
+
+@keyframes mobile-gallery-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-gallery {
+    animation: none;
+  }
 }
 
 .mobile-gallery--empty {

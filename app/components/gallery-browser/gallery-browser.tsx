@@ -67,11 +67,13 @@ export default function GalleryBrowser({
       />
 
       <div className="gallery-desktop" ref={desktopRef}>
-        <GalleryDisplay gallery={gallery} social={social} />
+        {/* key={active} → clean remount per switch: re-triggers the fade-in
+            and the blur-up placeholders (no index-key node reuse). */}
+        <GalleryDisplay key={active} gallery={gallery} social={social} />
       </div>
 
       <div className="gallery-mobile">
-        <MobileGallery gallery={gallery} />
+        <MobileGallery key={active} gallery={gallery} />
       </div>
     </div>
   );
