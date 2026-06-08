@@ -1,5 +1,11 @@
 import { StructureResolver } from "sanity/structure";
-import { CogIcon, ImagesIcon, DocumentsIcon, CalendarIcon } from "@sanity/icons";
+import {
+  CogIcon,
+  ImagesIcon,
+  DocumentsIcon,
+  CalendarIcon,
+  DocumentTextIcon,
+} from "@sanity/icons";
 
 export const structure: StructureResolver = (S) =>
   S.list()
@@ -19,16 +25,14 @@ export const structure: StructureResolver = (S) =>
 
       S.divider(),
 
-      // Availability - opens directly as singleton
+      // Portfolio Categories
       S.listItem()
-        .title("Availability")
-        .id("availability")
-        .icon(CalendarIcon)
+        .title("Categorii Portofoliu")
+        .icon(DocumentsIcon)
         .child(
-          S.document()
-            .schemaType("availability")
-            .documentId("availability")
-            .title("Availability")
+          S.documentTypeList("portfolio-category")
+            .title("Categorii Portofoliu")
+            .defaultOrdering([{ field: "index", direction: "asc" }])
         ),
 
       S.divider(),
@@ -43,15 +47,32 @@ export const structure: StructureResolver = (S) =>
             .defaultOrdering([{ field: "name", direction: "asc" }])
         ),
 
+
+
       S.divider(),
 
-      // Portfolio Categories
+              // Availability - opens directly as singleton
       S.listItem()
-        .title("Categorii Portofoliu")
-        .icon(DocumentsIcon)
+        .title("Calendar")
+        .id("availability")
+        .icon(CalendarIcon)
         .child(
-          S.documentTypeList("portfolio-category")
-            .title("Categorii Portofoliu")
-            .defaultOrdering([{ field: "index", direction: "asc" }])
+          S.document()
+            .schemaType("availability")
+            .documentId("availability")
+            .title("Calendar")
+        ),
+
+      S.divider(),
+
+
+      // Contract Templates
+      S.listItem()
+        .title("Contracte")
+        .icon(DocumentTextIcon)
+        .child(
+          S.documentTypeList("contractTemplate")
+            .title("Contracte")
+            .defaultOrdering([{ field: "title", direction: "asc" }])
         ),
     ]);

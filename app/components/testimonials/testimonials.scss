@@ -38,6 +38,102 @@
   }
 }
 
+// Desktop grid vs. mobile swiper — toggled at the tablet breakpoint (mirrors
+// the gallery's .gallery-desktop / .gallery-mobile split).
+.testimonials-desktop {
+  display: none;
+
+  @include respond-to("tablet") {
+    display: grid;
+  }
+}
+
+.testimonials-mobile {
+  @include respond-to("tablet") {
+    display: none;
+  }
+}
+
+.testimonials-swiper {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  // Tight side gap; bottom keeps room for the pagination dots.
+  padding: 0px 0px 46px;
+
+  // Slides stretch to the tallest one (flex wrapper, no autoHeight), and the
+  // card fills its slide so every card is the same height.
+  .swiper-slide {
+    height: auto;
+    display: flex;
+  }
+
+  // Tighter shadow than the desktop grid so it fits inside the padded area
+  // (the swiper clips overflow, which is what caused the hard-edged shadow).
+  .testimonials-card {
+    width: 100%;
+    height: auto;
+    box-sizing: border-box;
+    padding: 16px;
+    padding-top: 60px;
+    gap: 16px;
+    min-height: 300px;
+    // Blur kept within the 16px side padding so it isn't clipped.
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+
+    // Larger quotation mark as a prominent accent.
+    &::before {
+      top: 10px;
+      left: 12px;
+      font-size: 6rem;
+    }
+
+    // No hover lift on touch.
+    &:hover {
+      transform: none;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    // Quote grows to fill the free space and centres vertically; this pushes
+    // the signature (which follows it) to the bottom of the card.
+    .testimonials-quote {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+  }
+
+  .swiper-pagination {
+    bottom: 8px !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: center;
+  }
+
+  .swiper-pagination-bullet {
+    flex: 0 0 auto;
+    width: 8px;
+    height: 8px;
+    margin: 0 !important;
+    background: rgba(0, 0, 0, 0.22);
+    opacity: 1;
+    // Constant px radius (a circle at 8px) so the morph to the active pill
+    // animates smoothly — a % → px radius transition is what looked off.
+    border-radius: 4px;
+    transition:
+      width 0.3s ease,
+      background-color 0.3s ease;
+
+    &.swiper-pagination-bullet-active {
+      width: 22px;
+      background: #1a1a1a;
+      border-radius: 4px;
+    }
+  }
+}
+
 .testimonials-card {
   position: relative;
   margin: 0;
@@ -79,8 +175,8 @@
   position: relative;
   z-index: 1;
   margin: 0;
-  font-size: 1.05rem;
-  line-height: 1.75;
+  font-size: 1.0rem;
+  line-height: 1.5;
   font-style: italic;
   color: #3a3a3a;
 }

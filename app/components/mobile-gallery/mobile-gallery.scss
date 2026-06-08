@@ -3,7 +3,7 @@
 .mobile-gallery {
   width: 100%;
   background: #f4f3f0;
-  padding: 20px 0;
+  padding: 10px 0;
 
   // Fade/rise in on mount (re-runs on each gallery switch via key remount).
   animation: mobile-gallery-in 0.35s ease both;
@@ -60,7 +60,7 @@
     transform: translateX(-50%) !important;
     width: fit-content !important;
     display: flex !important;
-    gap: 6px !important;
+    gap: 0px !important;
     justify-content: center !important;
     padding: 40px 40px !important;
     border-radius: 0px !important;
@@ -92,7 +92,7 @@
     }
 
     &.swiper-pagination-bullet-active {
-      width: 24px;
+      width: 16px;
       background: rgba(255, 255, 255, 1);
       border-radius: 4px;
     }

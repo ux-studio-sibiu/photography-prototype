@@ -66,6 +66,35 @@ export type GalleryType = {
   columns: GalleryColumn[];
 };
 
+export type ContractVariableType =
+  | "text"
+  | "multiline"
+  | "number"
+  | "currency"
+  | "date";
+
+export type ContractVariable = {
+  _key?: string;
+  key: string;
+  label: string;
+  type: ContractVariableType;
+  defaultValue?: string;
+  required?: boolean;
+};
+
+export type ContractTemplateType = {
+  _id: string;
+  title: string;
+  description?: string;
+  variables?: ContractVariable[];
+  body?: PortableTextBlock[];
+  pageSize?: "A4" | "LETTER";
+  accentColor?: string;
+  logoUrl?: string;
+  headerText?: string;
+  footerText?: string;
+};
+
 export type DayStatus = "occupied" | "free";
 
 export type DayRecord = {

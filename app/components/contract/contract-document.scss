@@ -1,0 +1,203 @@
+// Romanian diacritics (ș, ț) need full Latin-Extended coverage — Noto Serif,
+// served locally from /public/fonts.
+@font-face {
+  font-family: "Noto Serif";
+  src: url("/fonts/NotoSerif-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Serif";
+  src: url("/fonts/NotoSerif-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Serif";
+  src: url("/fonts/NotoSerif-Italic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Noto Serif";
+  src: url("/fonts/NotoSerif-BoldItalic.ttf") format("truetype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+// A4 page geometry used for both the screen sheet and the printed page.
+$page-margin-y: 18mm;
+$page-margin-x: 16mm;
+
+.contract-doc {
+  --accent: #1a1a1a;
+
+  font-family: "Noto Serif", Georgia, "Times New Roman", serif;
+  font-size: 10.5pt;
+  line-height: 1.25;
+  color: #222;
+  text-rendering: optimizeLegibility;
+
+  // On-screen sheet (mm/pt so it visually matches the printed page).
+  box-sizing: border-box;
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+  padding: $page-margin-y $page-margin-x;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+// ── First-page header (studio line / logo) ──────────────────────────────
+.contract-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  font-size: 8.5pt;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #999;
+}
+
+.contract-logo {
+  height: 26px;
+  width: auto;
+  object-fit: contain;
+}
+
+// ── Title ────────────────────────────────────────────────────────────────
+.contract-titleblock {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.contract-title {
+  margin: 0;
+  font-size: 16pt;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--accent);
+}
+
+.contract-title-rule {
+  display: block;
+  width: 56px;
+  height: 0;
+  margin: 8px auto 0;
+  border-top: 1.5px solid var(--accent);
+}
+
+// ── Body typography ────────────────────────────────────────────────────────
+.contract-body {
+  .c-p {
+    margin: 0 0 7px;
+    text-align: justify;
+    line-height: 1.25;
+    orphans: 2;
+    widows: 2;
+  }
+
+  .c-h2 {
+    margin: 18px 0 9px;
+    padding-bottom: 4px;
+    font-size: 11.5pt;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    color: var(--accent);
+    border-bottom: 0.5px solid #ddd;
+    break-after: avoid;
+  }
+
+  .c-h3 {
+    margin: 12px 0 5px;
+    font-size: 11pt;
+    font-weight: 700;
+    break-after: avoid;
+  }
+
+  .c-quote {
+    margin: 0 0 8px 12px;
+    padding-left: 10px;
+    border-left: 2px solid #ccc;
+    font-style: italic;
+    break-inside: avoid;
+  }
+
+  .c-ul,
+  .c-ol {
+    margin: 0 0 7px;
+    padding-left: 22px;
+  }
+
+  .c-li {
+    margin-bottom: 5px;
+    line-height: 1.25;
+    text-align: justify;
+    break-inside: avoid;
+  }
+
+  .c-var {
+    font-weight: 700;
+  }
+
+  .c-u {
+    text-decoration: underline;
+  }
+
+  .c-link {
+    color: var(--accent);
+    text-decoration: underline;
+  }
+}
+
+.contract-footer {
+  margin-top: 26px;
+  padding-top: 6px;
+  border-top: 0.5px solid #ddd;
+  text-align: center;
+  font-size: 8.5pt;
+  letter-spacing: 0.4px;
+  color: #999;
+}
+
+// ── Debug: outline every element to inspect spacing (screen only) ──────────
+.contract-doc.is-debug {
+  .contract-body *,
+  .contract-header,
+  .contract-titleblock,
+  .contract-footer {
+    outline: 1px solid rgba(220, 0, 0, 0.35);
+  }
+}
+
+// ── Print ──────────────────────────────────────────────────────────────────
+@page {
+  size: A4;
+  margin: $page-margin-y $page-margin-x;
+}
+
+@media print {
+  .contract-doc {
+    width: auto;
+    min-height: 0;
+    margin: 0;
+    padding: 0; // @page margins provide the page padding now
+    box-shadow: none;
+  }
+
+  // Debug outlines are a screen-only aid.
+  .contract-doc.is-debug {
+    .contract-body *,
+    .contract-header,
+    .contract-titleblock,
+    .contract-footer {
+      outline: none;
+    }
+  }
+}

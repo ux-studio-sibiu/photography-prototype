@@ -5,6 +5,7 @@ import {
   PortfolioCategoryType,
   GalleryType,
   AvailabilityType,
+  ContractTemplateType,
 } from "@/types";
 import { unstable_cache } from "next/cache";
 
@@ -128,6 +129,49 @@ export const getGalleryLinks = unstable_cache(
   },
   ["galleryLinks"],
   { revalidate: revalidateInterval, tags: ["gallery"] },
+);
+
+// Shared projection for a contract template resolved to UI fields.
+const CONTRACT_TEMPLATE_FIELDS = groq`
+  _id,
+  title,
+  description,
+  variables[]{
+    _key,
+    key,
+    label,
+    type,
+    defaultValue,
+    required,
+  },
+  body,
+  pageSize,
+  accentColor,
+  "logoUrl": logo.asset->url,
+  headerText,
+  footerText
+`;
+
+export const getContractTemplates = unstable_cache(
+  async (): Promise<ContractTemplateType[]> => {
+    return client.fetch(
+      groq`*[_type == "contractTemplate"] | order(title asc){ ${CONTRACT_TEMPLATE_FIELDS} }`,
+      {},
+    );
+  },
+  ["contractTemplates"],
+  { revalidate: revalidateInterval, tags: ["contractTemplate"] },
+);
+
+export const getContractTemplateById = unstable_cache(
+  async (id: string): Promise<ContractTemplateType | null> => {
+    return client.fetch(
+      groq`*[_type == "contractTemplate" && _id == $id][0]{ ${CONTRACT_TEMPLATE_FIELDS} }`,
+      { id },
+    );
+  },
+  ["contractTemplate"],
+  { revalidate: revalidateInterval, tags: ["contractTemplate"] },
 );
 
 export const getAvailability = unstable_cache(

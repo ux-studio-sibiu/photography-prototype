@@ -1,0 +1,252 @@
+.contract-tool {
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  color: #1a1a1a;
+
+  // On desktop, pin the tool to the viewport so the page itself never
+  // scrolls — only the left panel (if its content is tall) and the PDF
+  // viewer scroll internally.
+  @media (min-width: 861px) {
+    height: 100vh;
+    overflow: hidden;
+  }
+}
+
+.contract-empty {
+  max-width: 540px;
+  margin: 12vh auto;
+  padding: 0 24px;
+  text-align: center;
+
+  h1 {
+    margin-bottom: 12px;
+  }
+
+  a {
+    color: #1a6cff;
+    text-decoration: underline;
+  }
+}
+
+.contract-generator {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  height: 100vh;
+  overflow: hidden;
+
+  @media (max-width: 860px) {
+    grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
+  }
+}
+
+.contract-generator .panel {
+  padding: 24px;
+  overflow-y: auto;
+  border-right: 1px solid #e6e6e6;
+  background: #fafafa;
+
+  h1 {
+    font-size: 20px;
+    margin: 0 0 20px;
+  }
+
+  .template-desc {
+    font-size: 13px;
+    color: #666;
+    margin: -8px 0 16px;
+  }
+
+  .hint {
+    font-size: 13px;
+    color: #888;
+  }
+}
+
+.contract-generator .fields {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.contract-generator .field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+
+    .required {
+      color: #d23;
+    }
+
+    code {
+      margin-left: auto;
+      font-size: 11px;
+      font-weight: 400;
+      color: #999;
+      background: #efefef;
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+  }
+
+  input,
+  textarea,
+  select {
+    font: inherit;
+    font-size: 14px;
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background: #fff;
+    width: 100%;
+
+    &:focus {
+      outline: none;
+      border-color: #1a6cff;
+      box-shadow: 0 0 0 2px rgba(26, 108, 255, 0.15);
+    }
+  }
+
+  textarea {
+    resize: vertical;
+  }
+}
+
+.contract-generator .actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.contract-generator .download-btn,
+.contract-generator a .download-btn {
+  display: inline-block;
+  background: #1a1a1a;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.contract-generator .update-btn {
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #1a6cff;
+  background: #fff;
+  color: #1a6cff;
+
+  &.is-dirty {
+    background: #1a6cff;
+    color: #fff;
+  }
+
+  &:disabled {
+    border-color: #ccc;
+    color: #aaa;
+    background: #f4f4f4;
+    cursor: default;
+  }
+}
+
+.contract-generator a {
+  text-decoration: none;
+}
+
+.contract-generator .debug-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  font-size: 13px;
+  color: #666;
+  cursor: pointer;
+
+  input {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+  }
+}
+
+.contract-generator .stale-hint {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #a06a00;
+  background: #fff7e6;
+  border: 1px solid #ffe2a8;
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.contract-generator .preview {
+  background: #525659;
+  overflow: auto;
+
+  @media (max-width: 860px) {
+    height: 80vh;
+  }
+}
+
+// Scroll container that centres the A4 sheet with breathing room.
+.contract-generator .preview-scroll {
+  display: flex;
+  justify-content: center;
+  padding: 28px;
+  min-height: 100%;
+}
+
+.preview-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #ddd;
+  font-size: 14px;
+}
+
+// ── Print: strip the app chrome so only the contract document prints ────────
+@media print {
+  .contract-tool {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .contract-generator {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .contract-generator .panel {
+    display: none !important;
+  }
+
+  .contract-generator .preview {
+    display: block !important;
+    overflow: visible !important;
+    background: #fff !important;
+    height: auto !important;
+  }
+
+  .contract-generator .preview-scroll {
+    display: block !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+}

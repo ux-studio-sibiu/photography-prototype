@@ -15,14 +15,20 @@ export type FooterSectionProps = {
   location?: string;
 };
 
-// ─── Mock data (replace with Sanity later) ──────────────────────────────
-const WORK_COLUMN: FooterColumn = {
-  title: "Work",
+// Primary navigation (mirrors the top nav) plus pages that exist but aren't
+// linked anywhere else in the UI yet.
+const EXPLORE_COLUMN: FooterColumn = {
+  title: "Explore",
   links: [
-    { label: "Portfolio", href: "#" },
-    { label: "Series", href: "#" },
-    { label: "Prints", href: "#" },
-    { label: "Archive", href: "#" },
+    // Top navigation
+    { label: "Despre mine", href: "/about" },
+    { label: "Portofoliu", href: "/#gallery" },
+    { label: "Calendar", href: "/calendar" },
+    { label: "Contact", href: "/contact" },
+    // Not surfaced elsewhere yet
+    { label: "Contracte", href: "/contracts" },
+    { label: "Showcase", href: "/white" },
+    { label: "Studio", href: "/studio" },
   ],
 };
 
@@ -48,7 +54,7 @@ export default async function FooterSection({
       })),
   };
 
-  const resolvedColumns = columns ?? [WORK_COLUMN, galleriesColumn];
+  const resolvedColumns = columns ?? [EXPLORE_COLUMN, galleriesColumn];
 
   // Social links from Sanity — only the ones that are filled in.
   const info = await getGeneralInfo();

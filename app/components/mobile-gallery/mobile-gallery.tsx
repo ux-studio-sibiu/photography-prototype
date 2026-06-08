@@ -12,6 +12,26 @@ interface MobileGalleryProps {
   gallery: GalleryType | null;
 }
 
+const MAX_SLIDES = 4;
+
+/**
+ * Split a category's images into swipers of at most 4 slides. A final lone
+ * slide is folded into the previous swiper (making it 5) so we never render a
+ * swiper that ends with a single orphan image.
+ */
+function chunkSlides<T>(images: T[]): T[][] {
+  const chunks: T[][] = [];
+  for (let i = 0; i < images.length; i += MAX_SLIDES) {
+    chunks.push(images.slice(i, i + MAX_SLIDES));
+  }
+  const last = chunks[chunks.length - 1];
+  if (chunks.length > 1 && last.length === 1) {
+    chunks.pop();
+    chunks[chunks.length - 1].push(last[0]);
+  }
+  return chunks;
+}
+
 export default function MobileGallery({ gallery }: MobileGalleryProps) {
   if (!gallery || !gallery.columns || gallery.columns.length === 0) {
     return (
@@ -23,22 +43,26 @@ export default function MobileGallery({ gallery }: MobileGalleryProps) {
 
   return (
     <div className="mobile-gallery">
-      {gallery.columns.map((column, colIdx) => {
+      {gallery.columns.flatMap((column, colIdx) => {
         const images = (column.photos ?? []).filter((p) => p.url);
-        if (images.length === 0) return null;
+        if (images.length === 0) return [];
 
-        return (
-          <div key={colIdx} className="mobile-gallery-category">
-            {/* <h3 className="mobile-gallery-title">{column.weight || `Category ${colIdx + 1}`}</h3> */}
+        // Each category is split into swipers of at most 4 slides (5 only to
+        // absorb a trailing orphan), each rendered as its own block.
+        return chunkSlides(images).map((chunk, chunkIdx) => (
+          <div
+            key={`${colIdx}-${chunkIdx}`}
+            className="mobile-gallery-category"
+          >
             <Swiper
               className="mobile-gallery-swiper"
               modules={[Pagination]}
               slidesPerView={1}
-              loop={images.length > 1}
+              loop={chunk.length > 1}
               pagination={{ clickable: true }}
               speed={300}
             >
-              {images.map((image, imgIdx) => (
+              {chunk.map((image, imgIdx) => (
                 <SwiperSlide key={imgIdx}>
                   <div className="mobile-gallery-slide">
                     <Image
@@ -55,7 +79,7 @@ export default function MobileGallery({ gallery }: MobileGalleryProps) {
               ))}
             </Swiper>
           </div>
-        );
+        ));
       })}
     </div>
   );

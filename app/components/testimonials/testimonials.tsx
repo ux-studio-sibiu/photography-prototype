@@ -1,4 +1,5 @@
 import "./testimonials.scss";
+import TestimonialsMobile from "./testimonials-mobile";
 
 interface Testimonial {
   name: string;
@@ -26,13 +27,18 @@ export default function Testimonials({
     <section className={`testimonials ${className}`.trim()}>
       {/* <h2 className="testimonials-title">{title}</h2> */}
 
-      <div className="testimonials-grid">
+      {/* Desktop: grid. Mobile: swiper with dots (see TestimonialsMobile). */}
+      <div className="testimonials-grid testimonials-desktop">
         {items.map((t, i) => (
           <figure key={i} className="testimonials-card">
             <blockquote className="testimonials-quote">{t.description}</blockquote>
             <figcaption className="testimonials-name">{t.name}</figcaption>
           </figure>
         ))}
+      </div>
+
+      <div className="testimonials-mobile">
+        <TestimonialsMobile items={items} />
       </div>
     </section>
   );
