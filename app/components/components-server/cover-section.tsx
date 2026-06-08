@@ -22,7 +22,12 @@ export default async function CoverSection() {
       </blockquote> */}
 
       <div className="cover-content">
-        <h1 className="cover-title text-uppercase">{title}</h1>
+        {/* Title links to the clean root (no ?c= gallery param) — a full
+            navigation so the gallery selection resets to the default. */}
+        <h1 className="cover-title text-uppercase">
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+          <a href="/">{title}</a>
+        </h1>
         {subtitle && <h2 className="cover-subtitle">{subtitle}</h2>}
         <SocialLinks className="cover-social" />
       </div>
