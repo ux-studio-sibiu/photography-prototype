@@ -50,6 +50,7 @@ export const getGeneralInfo = unstable_cache(
         email,
         phoneNumber,
         social,
+        "testimonials": testimonials.items[]{ name, description },
       }`,
       {},
     );

@@ -10,6 +10,7 @@ export type SiteInfoType = {
     instagram?: string;
     pinterest?: string;
   };
+  testimonials?: { name: string; description: string }[];
 };
 
 /** A gallery reference resolved to the bits the UI needs. */

@@ -27,46 +27,35 @@
   height: 100%;
   z-index: 5;
 
+  // Arrow icon is hidden — the cursor itself indicates direction on hover.
   svg {
-    width: 30px;
-    height: 30px;
-    stroke-width: 0.5;
-    stroke-color: #ccc;
-    color: #9c9c9c;
-
-    @include respond-to("tablet") {
-      width: 80px;
-      height: 80px;
-    }
-  }
-
-  &:hover svg {
-    color: #000000;
+    display: none;
   }
 
   &.icon-btn--nav-prev {
     left: 0;
-    padding-left: 30px;
-    justify-content: start;
-
+    cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 60 60' fill='white' stroke='black' stroke-width='1' stroke-linejoin='round'><path d='M29 43l-3 3-16-16 16-16 3 3-13 13 13 13z'/></svg>") 32 32, pointer;
   }
 
   &.icon-btn--nav-next {
-    padding-left: 30px;
     right: 0;
-    justify-content: start;
+    cursor: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 60 60' fill='white' stroke='black' stroke-width='1' stroke-linejoin='round'><g transform='translate(60,0) scale(-1,1)'><path d='M29 43l-3 3-16-16 16-16 3 3-13 13 13 13z'/></g></svg>") 32 32, pointer;
   }
 }
 
-// Close button (top-right, compact chip style)
+// Close button — full-width strip across the top (above the picture). Sits
+// above the nav arrows so the top area triggers close, not prev/next.
 .icon-btn--close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
-  width: 60px;
-  height: 60px;
-  z-index: 10;
-  border-radius: 50%;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 10%; // the gap above the centered image
+  z-index: 6; // above the nav arrows (5)
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  margin-right:30px;
 
   svg {
     width: 60px;
@@ -82,5 +71,4 @@
   &:hover svg path {
     fill: #000000;
   }
-
 }

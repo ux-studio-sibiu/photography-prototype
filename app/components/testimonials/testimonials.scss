@@ -1,0 +1,105 @@
+@use "@/app/styles/breakpoints" as *;
+
+.testimonials {
+  width: 100%;
+  padding: 80px 20px;
+  background: #f4f3f0;
+
+  @include respond-to("tablet") {
+    padding: 110px 40px;
+  }
+}
+
+.testimonials-title {
+  margin: 0 0 48px;
+  font-size: 1.5rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: center;
+  color: #1a1a1a;
+
+  @include respond-to("tablet") {
+    font-size: 2rem;
+    margin-bottom: 64px;
+  }
+}
+
+.testimonials-grid {
+  display: grid;
+  gap: 28px;
+  max-width: 1100px;
+  margin: 0 auto;
+  grid-template-columns: 1fr;
+
+  @include respond-to("tablet") {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+  }
+}
+
+.testimonials-card {
+  position: relative;
+  margin: 0;
+  padding: 48px 36px 36px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 14px 34px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+
+  // Large decorative quotation mark.
+  &::before {
+    content: "\201C";
+    position: absolute;
+    top: 10px;
+    left: 26px;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 4.5rem;
+    line-height: 1;
+    color: rgba(0, 0, 0, 0.07);
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.05),
+      0 20px 44px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.testimonials-quote {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  font-style: italic;
+  color: #3a3a3a;
+}
+
+.testimonials-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #1a1a1a;
+
+  // Short rule before the name.
+  &::before {
+    content: "";
+    width: 24px;
+    height: 1px;
+    background: #c9c4ba;
+  }
+}

@@ -3,6 +3,7 @@ import FooterSection from "@/app/components/components-server/footer-section";
 import GalleryBrowser from "@/app/components/gallery-browser/gallery-browser";
 import NavMenu from "@/app/components/nav-menu/nav-menu";
 import MobileSocialLinks from "@/app/components/social-links/mobile-social-links";
+import Testimonials from "@/app/components/testimonials/testimonials";
 import {
   getPortfolioCategories,
   getAllGalleries,
@@ -15,13 +16,8 @@ export const revalidate = 60; // seconds
 
 const DEFAULT_SLUG = "portfolio";
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: Promise<{ c?: string }>;
-}) {
-  const [{ c }, categories, galleries, info] = await Promise.all([
-    searchParams,
+export default async function Home() {
+  const [categories, galleries, info] = await Promise.all([
     getPortfolioCategories(),
     getAllGalleries(),
     getGeneralInfo(),
@@ -32,10 +28,6 @@ export default async function Home({
   (galleries ?? []).forEach((g) => {
     if (g?.slug?.current) galleriesBySlug[g.slug.current] = g;
   });
-
-  // Render the requested gallery (?c=) on the server so it shows immediately —
-  // no flash of the default gallery before the client swaps.
-  const initialSlug = c && galleriesBySlug[c] ? c : DEFAULT_SLUG;
 
   return (
     <main id="nsc--main">
@@ -54,9 +46,11 @@ export default async function Home({
         categories={categories ?? []}
         galleries={galleriesBySlug}
         social={info?.social}
-        initialSlug={initialSlug}
+        initialSlug={DEFAULT_SLUG}
         defaultSlug={DEFAULT_SLUG}
       />
+
+      <Testimonials testimonials={info?.testimonials} />
 
       <FooterSection />
     </main>

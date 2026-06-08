@@ -68,6 +68,44 @@ const generalInfo = {
         }),
       ],
     }),
+
+    defineField({
+      name: "testimonials",
+      title: "Testimonials",
+      type: "object",
+      options: { collapsible: true, collapsed: true },
+      fields: [
+        defineField({
+          name: "items",
+          title: "List",
+          type: "array",
+          of: [
+            {
+              type: "object",
+              name: "testimonial",
+              fields: [
+                defineField({
+                  name: "name",
+                  title: "Name",
+                  type: "string",
+                  validation: (rule) => rule.required(),
+                }),
+                defineField({
+                  name: "description",
+                  title: "Description",
+                  type: "text",
+                  rows: 3,
+                  validation: (rule) => rule.required(),
+                }),
+              ],
+              preview: {
+                select: { title: "name", subtitle: "description" },
+              },
+            },
+          ],
+        }),
+      ],
+    }),
   ],
 };
 
