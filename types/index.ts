@@ -12,12 +12,29 @@ export type SiteInfoType = {
   };
 };
 
+/** A gallery reference resolved to the bits the UI needs. */
+export type GalleryRef = {
+  slug?: string;
+  name?: string;
+  coverUrl?: string;
+  images?: string[];
+};
+
+export type PortfolioSubItem = {
+  _key?: string;
+  name: string;
+  gallery?: GalleryRef;
+};
+
 export type PortfolioCategoryType = {
   _id: string;
   name: string;
   description?: string;
   index?: number;
-  photos: { url: string }[];
+  /** The linked gallery (resolved from a reference), if any. */
+  gallery?: GalleryRef;
+  /** Optional nested entries; when present the category is an expandable group. */
+  subItems?: PortfolioSubItem[];
 };
 
 import type { PortableTextBlock } from "@portabletext/types";

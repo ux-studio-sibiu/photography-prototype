@@ -1,25 +1,30 @@
 import CoverSection from "@/app/components/components-server/cover-section";
 import FooterSection from "@/app/components/components-server/footer-section";
-import GalleryDisplay from "@/app/components/gallery-display/gallery-display";
-import MobileGallery from "@/app/components/mobile-gallery/mobile-gallery";
+import GalleryBrowser from "@/app/components/gallery-browser/gallery-browser";
 import NavMenu from "@/app/components/nav-menu/nav-menu";
 import MobileSocialLinks from "@/app/components/social-links/mobile-social-links";
-import CollapsibleSidebar from "@/app/components/collapsible-sidebar/collapsible-sidebar";
 import {
   getPortfolioCategories,
-  getGalleryBySlug,
+  getAllGalleries,
   getGeneralInfo,
 } from "@/sanity/sanity.query";
+import type { GalleryType } from "@/types";
 import "./page.scss";
 
 export const revalidate = 60; // seconds
 
 export default async function Home() {
-  const [categories, gallery, info] = await Promise.all([
+  const [categories, galleries, info] = await Promise.all([
     getPortfolioCategories(),
-    getGalleryBySlug("portfolio"),
+    getAllGalleries(),
     getGeneralInfo(),
   ]);
+
+  // Key galleries by slug so the browser can swap between them client-side.
+  const galleriesBySlug: Record<string, GalleryType> = {};
+  (galleries ?? []).forEach((g) => {
+    if (g?.slug?.current) galleriesBySlug[g.slug.current] = g;
+  });
 
   return (
     <main id="nsc--main">
@@ -34,17 +39,12 @@ export default async function Home() {
       <MobileSocialLinks social={info?.social} />
       <CoverSection />
 
-      <div id="gallery" className="gallery-container">
-        <CollapsibleSidebar categories={categories ?? []} />
-
-        <div className="gallery-desktop">
-          <GalleryDisplay gallery={gallery} social={info?.social} />
-        </div>
-
-        <div className="gallery-mobile">
-          <MobileGallery gallery={gallery} />
-        </div>
-      </div>
+      <GalleryBrowser
+        categories={categories ?? []}
+        galleries={galleriesBySlug}
+        social={info?.social}
+        initialSlug="portfolio"
+      />
 
       <FooterSection />
     </main>

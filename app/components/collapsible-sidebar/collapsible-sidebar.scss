@@ -88,10 +88,100 @@
   font-weight: 400;
   line-height: 1.2;
   cursor: pointer;
+  text-decoration: none;
   border-bottom: 1px solid transparent;
 
   &:hover {
     border-bottom-color: #1a1a1a;
+  }
+
+  &.is-active {
+    font-weight: 600;
+    border-bottom-color: #1a1a1a;
+  }
+
+  // Category with no gallery linked yet — non-interactive.
+  &.is-inert {
+    color: #b0aea9;
+    cursor: default;
+
+    &:hover {
+      border-bottom-color: transparent;
+    }
+  }
+}
+
+// ─── Expandable group (category with sub-items) ───
+.gallery-sidebar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @include respond-to("tablet") {
+    align-items: flex-start;
+  }
+}
+
+.gallery-sidebar-grouptoggle {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 8px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid transparent;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit; // buttons don't inherit the page font by default
+  letter-spacing: inherit;
+  color: inherit;
+}
+
+.gallery-sidebar-count {
+  font-size: 0.8rem;
+  color: #999;
+  font-weight: 400;
+}
+
+.gallery-sidebar-subitems {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  max-height: 0;
+  overflow: hidden;
+  // transition: max-height 0.3s ease, margin-top 0.3s ease;
+
+  // Mobile (centered): wrap the children in a soft panel so they clearly
+  // read as nested under the parent.
+  &.open {
+    max-height: 600px;
+    margin-top: 10px;
+    align-self: stretch;
+    padding: 14px 0;
+    background: rgba(0, 0, 0, 0.04);
+    border-radius: 8px;
+  }
+
+  // Desktop (left-aligned): indent + a connector line instead of the panel.
+  @include respond-to("tablet") {
+    align-items: flex-start;
+
+    &.open {
+      align-self: auto;
+      padding: 0 0 0 30px;
+      background: none;
+      border-radius: 0;
+      border-left: 1px solid rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+.gallery-sidebar-item.is-sub {
+  font-size: 0.85rem;
+  color: #6f6c66; // muted vs. the parent categories
+
+  &.is-active {
+    color: #1a1a1a;
   }
 }
 

@@ -11,6 +11,33 @@ import { unstable_cache } from "next/cache";
 // 3s in dev, 1h otherwise
 const revalidateInterval = process.env.NODE_ENV === "development" ? 3 : 3 * 3600;
 
+// Shared projection for a referenced gallery resolved to UI fields.
+const GALLERY_REF = groq`{
+  "slug": slug.current,
+  name,
+  "coverUrl": (columns[].photos[_type == "image"].asset->url)[0],
+  "images": columns[].photos[_type == "image"].asset->url
+}`;
+
+// Shared projection for a gallery's full content (columns + image/text items).
+const GALLERY_FIELDS = groq`
+  _id,
+  name,
+  slug,
+  gap,
+  "columns": columns[]{
+    weight,
+    "photos": photos[]{
+      _type,
+      "url": asset->url,
+      "width": asset->metadata.dimensions.width,
+      "height": asset->metadata.dimensions.height,
+      description,
+      text,
+    },
+  }
+`;
+
 export const getGeneralInfo = unstable_cache(
   async (): Promise<SiteInfoType> => {
     return client.fetch(
@@ -38,7 +65,12 @@ export const getPortfolioCategories = unstable_cache(
         name,
         description,
         index,
-        "photos": photos[]{ "url": asset->url },
+        "gallery": gallery->${GALLERY_REF},
+        "subItems": subItems[]{
+          _key,
+          name,
+          "gallery": gallery->${GALLERY_REF},
+        },
       }`,
       {},
     );
@@ -50,27 +82,22 @@ export const getPortfolioCategories = unstable_cache(
 export const getGalleryBySlug = unstable_cache(
   async (slug: string): Promise<GalleryType | null> => {
     return client.fetch(
-      groq`*[_type == "gallery" && slug.current == $slug][0]{
-        _id,
-        name,
-        slug,
-        gap,
-        "columns": columns[]{
-          weight,
-          "photos": photos[]{
-            _type,
-            "url": asset->url,
-            "width": asset->metadata.dimensions.width,
-            "height": asset->metadata.dimensions.height,
-            description,
-            text,
-          },
-        },
-      }`,
+      groq`*[_type == "gallery" && slug.current == $slug][0]{ ${GALLERY_FIELDS} }`,
       { slug },
     );
   },
   ["gallery"],
+  { revalidate: revalidateInterval, tags: ["gallery"] },
+);
+
+export const getAllGalleries = unstable_cache(
+  async (): Promise<GalleryType[]> => {
+    return client.fetch(
+      groq`*[_type == "gallery"]{ ${GALLERY_FIELDS} }`,
+      {},
+    );
+  },
+  ["galleriesAll"],
   { revalidate: revalidateInterval, tags: ["gallery"] },
 );
 

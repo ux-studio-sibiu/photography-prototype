@@ -11,15 +11,12 @@ export default async function PortfolioPage() {
   const categories = await getPortfolioCategories();
 
   const items: ZoomItem[] = (categories ?? [])
-    .filter((c) => c?.photos?.[0]?.url)
-    .map((c) => {
-      const urls = c.photos.filter((p) => p?.url).map((p) => p.url);
-      return {
-        src: urls[0],
-        images: urls, // looping slideshow when the category has >1 photo
-        title: c.name || "Untitled",
-      };
-    });
+    .filter((c) => c.gallery?.coverUrl)
+    .map((c) => ({
+      src: c.gallery!.coverUrl!,
+      images: c.gallery!.images, // looping slideshow when the gallery has >1 image
+      title: c.name || "Untitled",
+    }));
 
   return (
     <main id="nsc--main">
