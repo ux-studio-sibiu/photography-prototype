@@ -3,7 +3,7 @@
 .mobile-gallery {
   width: 100%;
   background: #f4f3f0;
-  padding: 10px 0;
+  padding:0;
 
   // Fade/rise in on mount (re-runs on each gallery switch via key remount).
   animation: mobile-gallery-in 0.35s ease both;
