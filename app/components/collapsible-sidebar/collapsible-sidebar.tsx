@@ -18,7 +18,8 @@ export default function CollapsibleSidebar({
   onSelect,
 }: CollapsibleSidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  // Only one group can be expanded at a time (accordion). null = all closed.
+  const [expandedId, setExpandedId] = useState<string | null>(null);
   const sidebarRef = useRef<HTMLElement>(null);
 
   const handleToggle = () => {
@@ -30,17 +31,13 @@ export default function CollapsibleSidebar({
     }
   };
 
-  // Keep the group containing the active gallery expanded.
+  // Keep the group containing the active gallery expanded (single open).
   useEffect(() => {
     if (!activeSlug) return;
     const parent = categories.find((c) =>
       c.subItems?.some((s) => s.gallery?.slug === activeSlug),
     );
-    if (parent) {
-      setExpanded((prev) =>
-        prev.has(parent._id) ? prev : new Set(prev).add(parent._id),
-      );
-    }
+    if (parent) setExpandedId(parent._id);
   }, [activeSlug, categories]);
 
   const select = (slug: string) => {
@@ -52,7 +49,10 @@ export default function CollapsibleSidebar({
     key: string,
     name: string,
     slug: string,
-    extraClass = "",
+    {
+      extraClass = "",
+      closeGroups = false,
+    }: { extraClass?: string; closeGroups?: boolean } = {},
   ) => (
     <a
       key={key}
@@ -60,6 +60,7 @@ export default function CollapsibleSidebar({
       className={`gallery-sidebar-item${slug === activeSlug ? " is-active" : ""}${extraClass}`}
       onClick={(e) => {
         e.preventDefault();
+        if (closeGroups) setExpandedId(null);
         select(slug);
       }}
     >
@@ -73,15 +74,10 @@ export default function CollapsibleSidebar({
 
     // Expandable group
     if (subs.length > 0) {
-      const open = expanded.has(category._id);
+      const open = expandedId === category._id;
       const toggleGroup = () => {
-        setExpanded((prev) => {
-          const next = new Set(prev);
-          next.has(category._id)
-            ? next.delete(category._id)
-            : next.add(category._id);
-          return next;
-        });
+        // Accordion: open this group (closing any other), or close it if open.
+        setExpandedId((prev) => (prev === category._id ? null : category._id));
         if (ownSlug) select(ownSlug); // a parent gallery also shows on click
       };
       return (
@@ -101,20 +97,20 @@ export default function CollapsibleSidebar({
           </button>
           <div className={`gallery-sidebar-subitems${open ? " open" : ""}`}>
             {subs.map((s) =>
-              renderLink(
-                s._key ?? s.name,
-                s.name,
-                s.gallery!.slug!,
-                " is-sub",
-              ),
+              renderLink(s._key ?? s.name, s.name, s.gallery!.slug!, {
+                extraClass: " is-sub",
+              }),
             )}
           </div>
         </div>
       );
     }
 
-    // Leaf with its own gallery
-    if (ownSlug) return renderLink(category._id, category.name, ownSlug);
+    // Leaf with its own gallery — clicking it also closes any open group.
+    if (ownSlug)
+      return renderLink(category._id, category.name, ownSlug, {
+        closeGroups: true,
+      });
 
     // Nothing linked yet → inert
     return (
